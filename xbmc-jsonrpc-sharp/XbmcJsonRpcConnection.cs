@@ -147,12 +147,17 @@ namespace XBMC.JsonRpc
 
         public bool Open() 
         {
+            return this.Open(AnnouncementPort);
+        }
+
+        public bool Open(int jsonPort) 
+        {
             this.client.LogMessage("Opening a connection to XBMC");
 
             try
             {
                 this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                this.socket.Connect(this.client.Uri.Host, AnnouncementPort);
+                this.socket.Connect(this.client.Uri.Host, jsonPort);
                 // Send a ping to XBMC
                 if (!this.IsAlive)
                 {
@@ -370,14 +375,11 @@ namespace XBMC.JsonRpc
                 string data = state.Builder.ToString();
                 if (data.Length > 0 && data.Contains(AnnouncementEnd) || data.Contains(AnnouncementEndAlternative))
                 {
-                    this.client.LogMessage("JSON RPC Announcement received: " + data);
+                    this.client.LogMessage("JSON RPC Notification received: " + data);
                     
-                    // TODO: Find the LAST AnnouncementEnd!!!
-                    //int pos = data.IndexOf(AnnouncementEnd);
                     int pos = data.LastIndexOf(AnnouncementEnd);
                     if (pos < 0)
                     {
-//                        pos = data.IndexOf(AnnouncementEndAlternative) + AnnouncementEndAlternative.Length;
                         pos = data.LastIndexOf(AnnouncementEndAlternative) + AnnouncementEndAlternative.Length;
                     }
                     else
