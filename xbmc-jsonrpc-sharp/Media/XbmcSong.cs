@@ -11,7 +11,7 @@ namespace XBMC.JsonRpc
 
         private string album;
         private int track;
-        private int disc;
+        //private int disc;
         private TimeSpan duration;
         private string comment;
         private string lyrics;
@@ -44,10 +44,10 @@ namespace XBMC.JsonRpc
             get { return this.track; }
         }
 
-        public int Disc
-        {
-            get { return this.disc; }
-        }
+        //public int Disc
+        //{
+        //    get { return this.disc; }
+        //}
 
         public TimeSpan Duration
         {
@@ -70,14 +70,21 @@ namespace XBMC.JsonRpc
 
         static XbmcSong()
         {
+            //fields = new string[] { "title", "artist", "genre", "year",
+            //                        "rating", "album", "tracknumber", "discnumber", 
+            //                        "duration", "comment", "lyrics" };
             fields = new string[] { "title", "artist", "genre", "year",
-                                    "rating", "album", "tracknumber", "discnumber", 
+                                    "rating", "album", "track", 
                                     "duration", "comment", "lyrics" };
         }
 
+        //private XbmcSong(int id, string thumbnail, string fanart, string file,
+        //                 string title, string artist, string genre, int year,
+        //                 int rating, string album, int track, int disc,
+        //                 int duration, string comment, string lyrics)
         private XbmcSong(int id, string thumbnail, string fanart, string file,
                          string title, string artist, string genre, int year,
-                         int rating, string album, int track, int disc,
+                         int rating, string album, int track,
                          int duration, string comment, string lyrics)
             : base(id, thumbnail, fanart, title, artist, genre, year, rating)
         {
@@ -89,7 +96,7 @@ namespace XBMC.JsonRpc
             this.file = file;
             this.album = album;
             this.track = track;
-            this.disc = disc;
+            //this.disc = disc;
             this.duration = TimeSpan.FromSeconds(duration);
             this.comment = comment;
             this.lyrics = lyrics;
@@ -118,8 +125,9 @@ namespace XBMC.JsonRpc
                                     JsonRpcClient.GetField<int>(obj, "year"),
                                     JsonRpcClient.GetField<int>(obj, "rating"),
                                     JsonRpcClient.GetField<string>(obj, "album", string.Empty),
-                                    JsonRpcClient.GetField<int>(obj, "tracknumber"),
-                                    JsonRpcClient.GetField<int>(obj, "discnumber"),
+                                    JsonRpcClient.GetField<int>(obj, "track"),
+                                    //JsonRpcClient.GetField<int>(obj, "tracknumber"),
+                    //JsonRpcClient.GetField<int>(obj, "discnumber"),
                                     JsonRpcClient.GetField<int>(obj, "duration"),
                                     JsonRpcClient.GetField<string>(obj, "comment", string.Empty),
                                     JsonRpcClient.GetField<string>(obj, "lyrics", string.Empty));

@@ -7,6 +7,7 @@ namespace XBMC.JsonRpc
     {
         #region Private variables
 
+        //private int id;
         private XbmcAudioPlayer audio;
         private XbmcVideoPlayer video;
         private XbmcPicturePlayer pictures;
@@ -20,7 +21,8 @@ namespace XBMC.JsonRpc
             get 
             {
                 bool audioPlayer, videoPlayer, picturePlayer;
-                if (!this.GetActivePlayers(out videoPlayer, out audioPlayer, out picturePlayer) || !audioPlayer)
+                int id;
+                if (!this.GetActivePlayers(out videoPlayer, out audioPlayer, out picturePlayer, out id) || !audioPlayer)
                 {
                     return null;
                 }
@@ -34,7 +36,8 @@ namespace XBMC.JsonRpc
             get
             {
                 bool audioPlayer, videoPlayer, picturePlayer;
-                if (!this.GetActivePlayers(out videoPlayer, out audioPlayer, out picturePlayer) || !videoPlayer)
+                int id;
+                if (!this.GetActivePlayers(out videoPlayer, out audioPlayer, out picturePlayer, out id) || !videoPlayer)
                 {
                     return null;
                 }
@@ -48,7 +51,8 @@ namespace XBMC.JsonRpc
             get
             {
                 bool audioPlayer, videoPlayer, picturePlayer;
-                if (!this.GetActivePlayers(out videoPlayer, out audioPlayer, out picturePlayer) || !picturePlayer)
+                int id;
+                if (!this.GetActivePlayers(out videoPlayer, out audioPlayer, out picturePlayer, out id) || !picturePlayer)
                 {
                     return null;
                 }
@@ -78,6 +82,7 @@ namespace XBMC.JsonRpc
         internal XbmcPlayer(JsonRpcClient client)
             : base(client)
         {
+            //this.id = -1;
             this.audio = new XbmcAudioPlayer(client);
             this.video = new XbmcVideoPlayer(client);
             this.pictures = new XbmcPicturePlayer(client);
@@ -87,15 +92,27 @@ namespace XBMC.JsonRpc
 
         #region JSON RPC Calls
 
-        public bool GetActivePlayers(out bool video, out bool audio, out bool picture)
+        public bool GetActivePlayers(out bool video, out bool audio, out bool picture, out int id)
         {
+
+            //JArray emptyArray = new JArray();
+
             this.client.LogMessage("XbmcPlayer.GetActivePlayers()");
 
             video = false;
             audio = false;
             picture = false;
+            id = -1;
 
             JObject query = this.client.Call("Player.GetActivePlayers") as JObject;
+
+            //if (queryOrig.Equals(emptyArray))
+            //{
+            //    this.client.LogMessage("Player.GetActivePlayers(): No active players found");
+
+            //    return false;
+            //}
+            
             if (query == null)
             {
                 this.client.LogErrorMessage("Player.GetActivePlayers(): Invalid response");
@@ -103,17 +120,33 @@ namespace XBMC.JsonRpc
                 return false;
             }
 
-            if (query["video"] != null)
+            //if (query["video"] != null)
+            //{
+            //    video = (bool)query["video"];
+            //}
+            //if (query["audio"] != null)
+            //{
+            //    audio = (bool)query["audio"];
+            //}
+            //if (query["picture"] != null)
+            //{
+            //    picture = (bool)query["picture"];
+            //}
+
+            id = (int) query["playerid"];
+            switch (((string) query["type"]))
             {
-                video = (bool)query["video"];
-            }
-            if (query["audio"] != null)
-            {
-                audio = (bool)query["audio"];
-            }
-            if (query["picture"] != null)
-            {
-                picture = (bool)query["picture"];
+                case "video":
+                    video = true;
+                    break;
+
+                case "audio":
+                    audio = true;
+                    break;
+
+                case "picture":
+                    picture = true;
+                    break;
             }
 
             return true;
@@ -247,7 +280,7 @@ namespace XBMC.JsonRpc
 
             TimeSpan current, total;
             XbmcMediaPlayer player = this.getProgress(out current, out total);
-            current = TimeSpan.Parse(this.getInfo<string>("Player.SeekTime")); 
+            //current = TimeSpan.Parse(this.getInfo<string>("Player.SeekTime")); 
             if (player == null)
             {
                 return;
@@ -263,7 +296,8 @@ namespace XBMC.JsonRpc
         private XbmcMediaPlayer getActivePlayer()
         {
             bool video, audio, picture;
-            if (!this.GetActivePlayers(out video, out audio, out picture))
+            int id;
+            if (!this.GetActivePlayers(out video, out audio, out picture, out id))
             {
                 return null;
             }

@@ -34,12 +34,14 @@ namespace XBMC.JsonRpc
 
         protected TType getInfo<TType>(string label, TType defaultValue)
         {
-            this.client.LogMessage("System.GetInfoLabels(" + label + ")");
+            this.client.LogMessage("XBMC.GetInfoLabels(" + label + ")");
 
-            JObject result = this.client.Call("System.GetInfoLabels", new string[] { label }) as JObject;
+            JObject labels = new JObject();
+            labels.Add(new JProperty("labels", new string[] { label }));
+            JObject result = this.client.Call("XBMC.GetInfoLabels", labels) as JObject;
             if (result == null || result[label] == null)
             {
-                this.client.LogErrorMessage("System.GetInfoLabels(" + label + "): Invalid response");
+                this.client.LogErrorMessage("XBMC.GetInfoLabels(" + label + "): Invalid response");
 
                 return defaultValue;
             }

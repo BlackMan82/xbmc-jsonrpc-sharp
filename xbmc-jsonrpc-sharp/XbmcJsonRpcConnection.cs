@@ -12,7 +12,7 @@ namespace XBMC.JsonRpc
         private const int AnnouncementPort = 9090;
         private const string AnnouncementEnd = "}}";
         private const string AnnouncementEndAlternative = "}\n}\n";
-        private const string AnnouncementMethod = "Announcement";
+        //private const string AnnouncementMethod = "Announcement";
         private const string AnnouncementSender = "xbmc";
         private const string PingResponse = "pong";
 
@@ -245,95 +245,89 @@ namespace XBMC.JsonRpc
         {
             JObject announcement = JObject.Parse(data);
             JObject param = announcement["params"] as JObject;
-            if (announcement["method"] == null || string.CompareOrdinal((string)announcement["method"], AnnouncementMethod) != 0
-                || param == null)
+            if (announcement["method"] == null || param == null || param["sender"] == null || string.CompareOrdinal((string)param["sender"], AnnouncementSender) != 0)
             {
+                this.client.LogErrorMessage("Wrong format of announcement");
                 return;
             }
 
-            if (param["sender"] == null || string.CompareOrdinal((string)param["sender"], AnnouncementSender) != 0
-                || param["message"] == null)
-            {
-                return;
-            }
+            string type = (string)announcement["method"];
 
-            string type = (string)param["message"];
-
-            if (string.CompareOrdinal(type, "PlaybackStarted") == 0)
+            if (string.CompareOrdinal(type, "Player.OnPlay") == 0)
             {
                 this.player.OnPlaybackStarted();
             }
-            else if (string.CompareOrdinal(type, "PlaybackPaused") == 0)
+            else if (string.CompareOrdinal(type, "Player.OnPause") == 0)
             {
                 this.player.OnPlaybackPaused();
             }
-            else if (string.CompareOrdinal(type, "PlaybackResumed") == 0)
-            {
-                this.player.OnPlaybackResumed();
-            }
-            else if (string.CompareOrdinal(type, "PlaybackStopped") == 0)
+            //else if (string.CompareOrdinal(type, "PlaybackResumed") == 0)
+            //{
+            //    this.player.OnPlaybackResumed();
+            //}
+            else if (string.CompareOrdinal(type, "Player.OnStop") == 0)
             {
                 this.player.OnPlaybackStopped();
             }
-            else if (string.CompareOrdinal(type, "PlaybackEnded") == 0)
-            {
-                this.player.OnPlaybackEnded();
-            }
-            else if (string.CompareOrdinal(type, "PlaybackSeek") == 0)
+            //else if (string.CompareOrdinal(type, "PlaybackEnded") == 0)
+            //{
+            //    this.player.OnPlaybackEnded();
+            //}
+            else if (string.CompareOrdinal(type, "Player.OnSeek") == 0)
             {
                 this.player.OnPlaybackSeek();
             }
-            else if (string.CompareOrdinal(type, "PlaybackSeekChapter") == 0)
-            {
-                this.player.OnPlaybackSeekChapter();
-            }
-            else if (string.CompareOrdinal(type, "PlaybackSpeedChanged") == 0)
+            //else if (string.CompareOrdinal(type, "PlaybackSeekChapter") == 0)
+            //{
+            //    this.player.OnPlaybackSeekChapter();
+            //}
+            else if (string.CompareOrdinal(type, "Player.OnSpeedChanged") == 0)
             {
                 this.player.OnPlaybackSpeedChanged();
             }
-            else if (string.CompareOrdinal(type, "QueueNextItem") == 0)
-            {
-                this.playlist.OnItemQueued();
-            }
-            else if (string.CompareOrdinal(type, "ApplicationStop") == 0)
+            //else if (string.CompareOrdinal(type, "QueueNextItem") == 0)
+            //{
+            //    this.playlist.OnItemQueued();
+            //}
+            else if (string.CompareOrdinal(type, "System.OnQuit") == 0)
             {
                 this.Close();
                 this.onAborted();
             }
-            else if (string.CompareOrdinal(type, "Shutdown") == 0)
-            {
-                this.Close();
-                this.system.OnShutdown();
-            }
-            else if (string.CompareOrdinal(type, "Suspend") == 0)
-            {
-                this.Close();
-                this.system.OnSuspend();
-            }
-            else if (string.CompareOrdinal(type, "Hibernate") == 0)
-            {
-                this.Close();
-                this.system.OnHibernate();
-            }
-            else if (string.CompareOrdinal(type, "Reboot") == 0)
-            {
-                this.Close();
-                this.system.OnReboot();
-            }
-            else if (string.CompareOrdinal(type, "Sleep") == 0)
+            //else if (string.CompareOrdinal(type, "Shutdown") == 0)
+            //{
+            //    this.Close();
+            //    this.system.OnShutdown();
+            //}
+            //else if (string.CompareOrdinal(type, "Suspend") == 0)
+            //{
+            //    this.Close();
+            //    this.system.OnSuspend();
+            //}
+            //else if (string.CompareOrdinal(type, "Hibernate") == 0)
+            //{
+            //    this.Close();
+            //    this.system.OnHibernate();
+            //}
+            //else if (string.CompareOrdinal(type, "System.OnRestart") == 0)
+            //{
+            //    this.Close();
+            //    this.system.OnReboot();
+            //}
+            else if (string.CompareOrdinal(type, "System.OnSleep") == 0)
             {
                 this.Close();
                 this.system.OnSleep();
             }
-            else if (string.CompareOrdinal(type, "Wake") == 0)
+            else if (string.CompareOrdinal(type, "System.OnWake") == 0)
             {
                 this.system.OnWake();
             }
-            else if (string.CompareOrdinal(type, "Resume") == 0)
-            {
-                this.system.OnResume();
-            }
-            else if (string.CompareOrdinal(type, "LowBattery") == 0)
+            //else if (string.CompareOrdinal(type, "Resume") == 0)
+            //{
+            //    this.system.OnResume();
+            //}
+            else if (string.CompareOrdinal(type, "System.OnLowBattery") == 0)
             {
                 this.system.OnLowBattery();
             }
@@ -378,10 +372,13 @@ namespace XBMC.JsonRpc
                 {
                     this.client.LogMessage("JSON RPC Announcement received: " + data);
                     
-                    int pos = data.IndexOf(AnnouncementEnd);
+                    // TODO: Find the LAST AnnouncementEnd!!!
+                    //int pos = data.IndexOf(AnnouncementEnd);
+                    int pos = data.LastIndexOf(AnnouncementEnd);
                     if (pos < 0)
                     {
-                        pos = data.IndexOf(AnnouncementEndAlternative) + AnnouncementEndAlternative.Length;
+//                        pos = data.IndexOf(AnnouncementEndAlternative) + AnnouncementEndAlternative.Length;
+                        pos = data.LastIndexOf(AnnouncementEndAlternative) + AnnouncementEndAlternative.Length;
                     }
                     else
                     {

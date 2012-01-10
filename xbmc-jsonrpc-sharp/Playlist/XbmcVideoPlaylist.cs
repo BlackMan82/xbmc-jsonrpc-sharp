@@ -8,7 +8,7 @@ namespace XBMC.JsonRpc
         #region Constructor
 
         internal XbmcVideoPlaylist(JsonRpcClient client)
-            : base("VideoPlaylist", client)
+            : base("Playlist", client, 1)
         { }
 
         #endregion
@@ -19,27 +19,28 @@ namespace XBMC.JsonRpc
 
         #region Overrides of XbmcMediaPlaylist<XbmcVideo>
 
-        public override XbmcVideo GetCurrentItem(params string[] fields)
-        {
-            this.client.LogMessage("XbmcVideoPlaylist.GetCurrentItem()");
+        // TODO: Get current playing item information
+        //public override XbmcVideo GetCurrentItem(params string[] fields)
+        //{
+        //    this.client.LogMessage("XbmcVideoPlaylist.GetCurrentItem()");
 
-            JObject query = base.getItems(fields, XbmcVideo.Fields, -1, -1);
-            if (query == null || query["current"] == null || query["items"] == null)
-            {
-                this.client.LogErrorMessage("VideoPlaylist.GetItems(): Invalid response");
+        //    JObject query = base.getItems(fields, XbmcVideo.Fields, -1, -1);
 
-                return null;
-            }
+        //    if (query == null || query["result"] == null || (((JObject)query["result"])["items"]) == null)
+        //    {
+        //        this.client.LogErrorMessage("Playlist.GetItems(): Invalid response");
 
-            int current = (int)query["current"];
-            JArray items = (JArray)query["items"];
-            if (current < 0 || items == null || current > items.Count)
-            {
-                return null;
-            }
+        //        return null;
+        //    }
 
-            return XbmcVideo.FromJson((JObject)items[current]);
-        }
+        //    JArray items = (JArray)query["items"];
+        //    if (items.Count == 0)
+        //    {
+        //        return null;
+        //    }
+
+        //    return XbmcVideo.FromJson((JObject)items[0]);
+        //}
 
         public override XbmcPlaylist<XbmcVideo> GetItems(params string[] fields)
         {
@@ -53,7 +54,7 @@ namespace XBMC.JsonRpc
             JObject query = this.getItems(fields, XbmcVideo.Fields, start, end);
             if (query == null || query["items"] == null)
             {
-                this.client.LogErrorMessage("VideoPlaylist.GetItems(): Invalid response");
+                this.client.LogErrorMessage("Playlist.GetItems(): Invalid response");
 
                 return null;
             }

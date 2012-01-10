@@ -206,7 +206,8 @@ namespace XBMC.JsonRpc
             try
             {
                 // If there is a showtitle field and it has a value, the retrieved item is a XbmcTvEpisode
-                if (obj["showtitle"] != null && !string.IsNullOrEmpty(JsonRpcClient.GetField<string>(obj, "showtitle")))
+                //if (obj["showtitle"] != null && !string.IsNullOrEmpty(JsonRpcClient.GetField<string>(obj, "showtitle")))
+                if (obj["type"] != null && "episode" == JsonRpcClient.GetField<string>(obj, "type"))
                 {
                     return XbmcTvEpisode.FromJson(obj);
                 }

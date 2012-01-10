@@ -8,7 +8,7 @@ namespace XBMC.JsonRpc
         #region Constructor
 
         internal XbmcAudioPlaylist(JsonRpcClient client)
-            : base("AudioPlaylist", client)
+            : base("AudioPlaylist", client, 0)
         { }
 
         #endregion
@@ -19,27 +19,28 @@ namespace XBMC.JsonRpc
 
         #region Overrides of XbmcMediaPlaylist<XbmcVideo>
 
-        public override XbmcSong GetCurrentItem(params string[] fields)
-        {
-            this.client.LogMessage("XbmcAudioPlaylist.GetCurrentItem()");
+        // TODO: Get current playing item information
+        //public override XbmcSong GetCurrentItem(params string[] fields)
+        //{
+        //    this.client.LogMessage("XbmcAudioPlaylist.GetCurrentItem()");
 
-            JObject query = this.getItems(fields, XbmcSong.Fields, -1, -1);
-            if (query == null || query["current"] == null || query["items"] == null)
-            {
-                this.client.LogErrorMessage("AudioPlaylist.GetItems(): Invalid response");
+        //    JObject query = this.getItems(fields, XbmcSong.Fields, -1, -1);
+        //    if (query == null || query["result"] == null || (((JObject)query["result"])["items"]) == null)
+        //    {
+        //        this.client.LogErrorMessage("Playlist.GetItems(): Invalid response");
 
-                return null;
-            }
+        //        return null;
+        //    }
 
-            int current = (int)query["current"];
-            JArray items = (JArray)query["items"];
-            if (current < 0 || items == null || current > items.Count)
-            {
-                return null;
-            }
+        //    int current = (int)query["result"]["items"];
+        //    JArray items = (JArray)query["items"];
+        //    if (current < 0 || items == null || current > items.Count)
+        //    {
+        //        return null;
+        //    }
 
-            return XbmcSong.FromJson((JObject)items[current]);
-        }
+        //    return XbmcSong.FromJson((JObject)items[current]);
+        //}
 
         public override XbmcPlaylist<XbmcSong> GetItems(params string[] fields)
         {
@@ -51,14 +52,14 @@ namespace XBMC.JsonRpc
             this.client.LogMessage("XbmcAudioPlaylist.GetItems()");
 
             JObject query = this.getItems(fields, XbmcSong.Fields, start, end);
-            if (query == null || query["items"] == null)
+            if (query == null || query["result"] == null || (((JObject) query["result"])["items"]) == null)
             {
-                this.client.LogErrorMessage("AudioPlaylist.GetItems(): Invalid response");
+                this.client.LogErrorMessage("Playlist.GetItems(): Invalid response");
 
                 return null;
             }
 
-            XbmcPlaylist<XbmcSong> playlist = XbmcPlaylist<XbmcSong>.FromJson(query);
+            XbmcPlaylist<XbmcSong> playlist = XbmcPlaylist<XbmcSong>.FromJson((JObject) query["result"]);
             foreach (JObject item in (JArray)query["items"])
             {
                 playlist.Add(XbmcSong.FromJson(item));

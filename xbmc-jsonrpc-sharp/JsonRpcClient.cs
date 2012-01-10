@@ -124,6 +124,7 @@ namespace XBMC.JsonRpc
                         JObject call = new JObject();
                         call.Add(new JProperty("jsonrpc", "2.0"));
                         call.Add(new JProperty("method", method));
+
                         if (args != null)
                         {
                             call.Add(new JProperty("params", args));
@@ -239,7 +240,15 @@ namespace XBMC.JsonRpc
                 {
                     if (property.Value.HasValues == true)
                     {
-                        return property.Value as JObject;
+                        if (property.Value.Type == JTokenType.Array)
+                        {
+                            return (property.Value[0] as JObject);
+                        }
+                        else
+                        {
+
+                            return property.Value as JObject;
+                        }
                     }
                     if (property.Value.Type == JTokenType.Integer)
                     {
@@ -254,6 +263,11 @@ namespace XBMC.JsonRpc
                         return property.Value.Value<JValue>().Value.ToString();
                     }
 
+                    if (property.Value.Type == JTokenType.Array)
+                    {
+                        JArray xxx = property.Value.Value<JArray>();
+                        return property.Value.Value<JArray>();
+                    }
                     return property.Value.Value<JValue>();
                 }
             }

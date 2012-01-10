@@ -7,6 +7,8 @@ namespace XBMC.JsonRpc
     {
         #region Private variables
 
+        private int id;
+        //private int id { get { return id; } set { this.id = value; } }
         private string playerName;
         private string infoLabelName;
 
@@ -20,7 +22,7 @@ namespace XBMC.JsonRpc
             {
                 this.client.LogMessage("XbmcMediaPlayer.State");
 
-                return this.parsePlayerState(this.client.Call(this.playerName + ".State") as JObject);
+                return this.parsePlayerState(this.getPlayerProperties(new object[] { "speed", "partymode" }));
             }
         }
 
@@ -28,11 +30,11 @@ namespace XBMC.JsonRpc
 
         #region Constructors
 
-        protected XbmcMediaPlayer(string playerName, JsonRpcClient client)
-            : this(playerName, null, client)
+        protected XbmcMediaPlayer(string playerName, JsonRpcClient client, int id)
+            : this(playerName, null, client, id)
         { }
 
-        protected XbmcMediaPlayer(string playerName, string infoLabelName, JsonRpcClient client)
+        protected XbmcMediaPlayer(string playerName, string infoLabelName, JsonRpcClient client, int id)
             : base(client)
         {
             if (string.IsNullOrEmpty(playerName))
@@ -46,39 +48,40 @@ namespace XBMC.JsonRpc
 
             this.playerName = playerName;
             this.infoLabelName = infoLabelName;
+            this.id = (id == -1) ? (id = 1) : id;
         }
 
         #endregion
 
         #region JSON RPC Calls
 
-        public virtual XbmcPlayerState PlayPause()
-        {
-            this.client.LogMessage("XbmcMediaPlayer.PlayPause()");
+        //public virtual XbmcPlayerState PlayPause()
+        //{
+        //    this.client.LogMessage("XbmcMediaPlayer.PlayPause()");
 
-            return this.parsePlayerState(this.client.Call(this.playerName + ".PlayPause") as JObject);
-        }
+        //    return this.parsePlayerState(this.client.Call(this.playerName + ".PlayPause") as JObject);
+        //}
 
-        public virtual bool Stop()
-        {
-            this.client.LogMessage("XbmcMediaPlayer.Stop()");
+        //public virtual bool Stop()
+        //{
+        //    this.client.LogMessage("XbmcMediaPlayer.Stop()");
 
-            return (this.client.Call(this.playerName + ".Stop") != null);
-        }
+        //    return (this.client.Call(this.playerName + ".Stop") != null);
+        //}
 
-        public virtual bool SkipPrevious()
-        {
-            this.client.LogMessage("XbmcMediaPlayer.SkipPrevious()");
+        //public virtual bool SkipPrevious()
+        //{
+        //    this.client.LogMessage("XbmcMediaPlayer.SkipPrevious()");
 
-            return (this.client.Call(this.playerName + ".SkipPrevious") != null);
-        }
+        //    return (this.client.Call(this.playerName + ".SkipPrevious") != null);
+        //}
 
-        public virtual bool SkipNext()
-        {
-            this.client.LogMessage("XbmcMediaPlayer.SkipNext()");
+        //public virtual bool SkipNext()
+        //{
+        //    this.client.LogMessage("XbmcMediaPlayer.SkipNext()");
 
-            return (this.client.Call(this.playerName + ".SkipNext") != null);
-        }
+        //    return (this.client.Call(this.playerName + ".SkipNext") != null);
+        //}
 
         #endregion
 
@@ -100,13 +103,8 @@ namespace XBMC.JsonRpc
             {
                 this.client.LogMessage("XbmcMediaPlayer.Random");
 
-                string random = base.getInfo<string>("Playlist.Random");
-                if (random == "Random")
-                {
-                    return true;
-                }
-
-                return false;
+                JObject obj = this.getPlayerProperties(new object[] { "shuffled" });
+                return (((obj != null) && (obj["shuffled"] != null)) && ((bool)obj["shuffled"]));
             }
         }
 
@@ -116,16 +114,18 @@ namespace XBMC.JsonRpc
             {
                 this.client.LogMessage("XbmcMediaPlayer.Repeat");
 
-                string repeat = base.getInfo<string>("Playlist.Repeat");
-                if (repeat == "One")
+                JObject obj = this.getPlayerProperties(new object[] { "Repeat" });
+                if ((obj != null) && (obj["Repeat"] != null))
                 {
-                    return XbmcRepeatTypes.One;
+                    if (((string)obj["Repeat"]) == "One")
+                    {
+                        return XbmcRepeatTypes.One;
+                    }
+                    if (((string)obj["Repeat"]) == "All")
+                    {
+                        return XbmcRepeatTypes.All;
+                    }
                 }
-                else if (repeat == "All")
-                {
-                    return XbmcRepeatTypes.All;
-                }
-
                 return XbmcRepeatTypes.Off;
             }
         }
@@ -134,47 +134,47 @@ namespace XBMC.JsonRpc
 
         #region Helper functions
 
-        protected bool bigSkipBackward()
-        {
-            this.client.LogMessage("Xbmc" + this.playerName + ".()");
+        //protected bool bigSkipBackward()
+        //{
+        //    this.client.LogMessage("Xbmc" + this.playerName + ".()");
 
-            return (this.client.Call(this.playerName + ".BigSkipBackward") != null);
-        }
+        //    return (this.client.Call(this.playerName + ".BigSkipBackward") != null);
+        //}
 
-        protected bool bigSkipForward()
-        {
-            this.client.LogMessage("Xbmc" + this.playerName + ".BigSkipForward()");
+        //protected bool bigSkipForward()
+        //{
+        //    this.client.LogMessage("Xbmc" + this.playerName + ".BigSkipForward()");
 
-            return (this.client.Call(this.playerName + ".BigSkipForward") != null);
-        }
+        //    return (this.client.Call(this.playerName + ".BigSkipForward") != null);
+        //}
 
-        protected bool smallSkipBackward()
-        {
-            this.client.LogMessage("Xbmc" + this.playerName + ".SmallSkipBackward()");
+        //protected bool smallSkipBackward()
+        //{
+        //    this.client.LogMessage("Xbmc" + this.playerName + ".SmallSkipBackward()");
 
-            return (this.client.Call(this.playerName + ".SmallSkipBackward") != null);
-        }
+        //    return (this.client.Call(this.playerName + ".SmallSkipBackward") != null);
+        //}
 
-        protected bool smallSkipForward()
-        {
-            this.client.LogMessage("Xbmc" + this.playerName + ".SmallSkipForward()");
+        //protected bool smallSkipForward()
+        //{
+        //    this.client.LogMessage("Xbmc" + this.playerName + ".SmallSkipForward()");
 
-            return (this.client.Call(this.playerName + ".SmallSkipForward") != null);
-        }
+        //    return (this.client.Call(this.playerName + ".SmallSkipForward") != null);
+        //}
 
-        protected bool rewind()
-        {
-            this.client.LogMessage("Xbmc" + this.playerName + ".Rewind()");
+        //protected bool rewind()
+        //{
+        //    this.client.LogMessage("Xbmc" + this.playerName + ".Rewind()");
 
-            return (this.client.Call(this.playerName + ".Rewind") != null);
-        }
+        //    return (this.client.Call(this.playerName + ".Rewind") != null);
+        //}
 
-        protected bool forward()
-        {
-            this.client.LogMessage("Xbmc" + this.playerName + ".Forward()");
+        //protected bool forward()
+        //{
+        //    this.client.LogMessage("Xbmc" + this.playerName + ".Forward()");
 
-            return (this.client.Call(this.playerName + ".Forward") != null);
-        }
+        //    return (this.client.Call(this.playerName + ".Forward") != null);
+        //}
 
         protected XbmcPlayerState getTime(out TimeSpan currentPosition, out TimeSpan totalLength)
         {
@@ -182,150 +182,122 @@ namespace XBMC.JsonRpc
 
             currentPosition = new TimeSpan();
             totalLength = new TimeSpan();
+            
+            JObject obj = this.getPlayerProperties(new object[] { "time", "totaltime", "speed" });
 
-            JObject query = this.client.Call(this.playerName + ".GetTimeMS") as JObject;
-            if (query != null && query["time"] != null && query["total"] != null &&
-                query["playing"] != null && query["paused"] != null)
+            if (((obj != null) && (obj["time"] != null)) && ((obj["totaltime"] != null) && (obj["speed"] != null)))
             {
-                currentPosition = TimeSpan.FromMilliseconds(Convert.ToDouble((int)query["time"]));
-                totalLength = TimeSpan.FromMilliseconds(Convert.ToDouble((int)query["total"]));
-
-                if ((bool)query["playing"])
+                JObject objTime = obj["time"] as JObject;
+                JObject objTotalTime = obj["totaltime"] as JObject;
+                int iSpeed = (int) obj["speed"];
+                currentPosition = new TimeSpan((int) objTime["hours"], (int) objTime["minutes"], (int) objTime["seconds"]);
+                totalLength = new TimeSpan((int) objTotalTime["hours"], (int) objTotalTime["minutes"], (int) objTotalTime["seconds"]);
+                if (iSpeed > 0)
                 {
                     return XbmcPlayerState.Playing;
                 }
-                if ((bool)query["paused"])
-                {
-                    return XbmcPlayerState.Paused;
-                }
+                return XbmcPlayerState.Paused;
             }
-
-            this.client.LogErrorMessage(this.playerName + ".GetTimeMS(): Invalid response");
+            
+            this.client.LogErrorMessage("Xbmc" + this.playerName + ".GetTime(): Invalid response");
 
             return XbmcPlayerState.Unavailable;
         }
 
-        protected int getPercentage()
+        protected double getPercentage()
         {
             this.client.LogMessage("Xbmc" + this.playerName + ".GetPercentage()");
 
-            JObject query = this.client.Call(this.playerName + ".GetPercentage") as JObject;
-            if (query == null)
+
+            JObject obj = new JObject();
+            obj.Add("playerid", this.id);
+            obj.Add("properties", new JArray("percentage"));
+            JObject properties = this.getPlayerProperties(new object[] { "percentage" });
+            if ((properties == null) && (properties["percentage"] == null))
             {
                 this.client.LogErrorMessage(this.playerName + ".GetPercentage(): Invalid response");
-
                 return -1;
             }
-
-            return (int)query;
+            return (double) properties["percentage"];
         }
 
-        protected bool seekTime(int seconds)
+        protected JObject getPlayerProperties(params object[] properties)
         {
-            this.client.LogMessage("Xbmc" + this.playerName + ".SeekTime(" + seconds + ")");
-
-            if (seconds < 0)
-            {
-                seconds = 0;
-            }
-
-            return (this.client.Call(this.playerName + ".SeekTime", seconds) != null);
+            JObject args = new JObject();
+            args.Add("playerid", this.id);
+            args.Add("properties", new JArray(properties));
+            return (this.client.Call("Player.GetProperties", args) as JObject);
         }
 
-        protected bool seekTime(TimeSpan position)
+        protected int getPlaySpeed()
         {
-            return this.seekTime(Convert.ToInt32(position.TotalSeconds));
+            JObject obj = this.getPlayerProperties(new object[] { "speed" });
+            if ((obj != null) && (obj["speed"] != null))
+            {
+                return (int)obj["speed"];
+            }
+            return 0;
         }
 
-        protected bool seekPercentage(int percentage)
-        {
-            this.client.LogMessage("Xbmc" + this.playerName + ".SeekPercentage(" + percentage + ")");
+        //protected bool seekTime(int seconds)
+        //{
+        //    this.client.LogMessage("Xbmc" + this.playerName + ".SeekTime(" + seconds + ")");
 
-            if (percentage < 0)
-            {
-                percentage = 0;
-            }
-            else if (percentage > 100)
-            {
-                percentage = 100;
-            }
+        //    if (seconds < 0)
+        //    {
+        //        seconds = 0;
+        //    }
 
-            return (this.client.Call(this.playerName + ".SeekPercentage", percentage) != null);
-        }
+        //    return (this.client.Call(this.playerName + ".SeekTime", seconds) != null);
+        //}
+
+        //protected bool seekTime(TimeSpan position)
+        //{
+        //    return this.seekTime(Convert.ToInt32(position.TotalSeconds));
+        //}
+
+        //protected bool seekPercentage(int percentage)
+        //{
+        //    this.client.LogMessage("Xbmc" + this.playerName + ".SeekPercentage(" + percentage + ")");
+
+        //    if (percentage < 0)
+        //    {
+        //        percentage = 0;
+        //    }
+        //    else if (percentage > 100)
+        //    {
+        //        percentage = 100;
+        //    }
+
+        //    return (this.client.Call(this.playerName + ".SeekPercentage", percentage) != null);
+        //}
 
         protected XbmcPlayerState parsePlayerState(JObject obj)
         {
-            if (obj == null || obj["playing"] == null || obj["paused"] == null || obj["partymode"] == null)
+            if (obj == null || obj["speed"] == null || obj["partymode"] == null)
             {
                 return XbmcPlayerState.Unavailable;
             }
 
             XbmcPlayerState state = XbmcPlayerState.Unavailable;
-            bool set = false;
 
-            if ((bool)obj["playing"])
+            int num = (int)obj["speed"];
+
+            if (num > 0)
             {
-                set = true;
                 state = XbmcPlayerState.Playing;
             }
-            if ((bool)obj["paused"])
+            else
             {
-                if (set)
-                {
-                    state |= XbmcPlayerState.Paused;
-                }
-                else
-                {
-                    state = XbmcPlayerState.Paused;
-                    set = true;
-                }
-            }
-            if ((bool)obj["partymode"])
-            {
-                if (set)
-                {
-                    state |= XbmcPlayerState.PartyMode;
-                }
-                else
-                {
-                    state = XbmcPlayerState.PartyMode;
-                    set = true;
-                }
+                state = XbmcPlayerState.Paused;
             }
 
-            if ((state & XbmcPlayerState.Playing) != XbmcPlayerState.Playing &&
-                (state & XbmcPlayerState.Paused) != XbmcPlayerState.Paused)
+            if ((bool)obj["partymode"])
             {
-                if (set)
-                {
-                    state |= XbmcPlayerState.Unavailable;
-                }
-                else
-                {
-                    state = XbmcPlayerState.Unavailable;
-                    set = true;
-                }
+                state |= XbmcPlayerState.PartyMode;
             }
 
             return state;
-        }
-
-        protected int getPlaySpeed()
-        {
-            string speed = this.getInfo<string>("MusicPlayer.TimeSpeed");
-            if (string.IsNullOrEmpty(speed))
-            {
-                return 0;
-            }
-
-            int start = speed.IndexOf("(") + 1;
-            int end = speed.IndexOf("x)");
-
-            if (start < 1 || end < 0)
-            {
-                return 1;
-            }
-            return Int32.Parse(speed.Substring(start, end - start));
         }
 
         #endregion

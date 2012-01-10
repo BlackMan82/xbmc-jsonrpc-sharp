@@ -31,7 +31,12 @@ namespace XBMC.JsonRpc
             {
                 this.client.LogMessage("XbmcGeneral.BuildDate");
 
-                return DateTime.Parse(this.system.GetInfoLabel("System.BuildDate"));
+                object infoLabel = this.system.GetInfoLabel("System.BuildDate");
+                if (infoLabel != null)
+                {
+                    return DateTime.Parse((string)infoLabel);
+                }
+                return DateTime.Now;
             }
         }
 

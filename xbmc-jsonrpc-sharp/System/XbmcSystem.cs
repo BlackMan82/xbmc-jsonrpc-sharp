@@ -150,7 +150,7 @@ namespace XBMC.JsonRpc
 
         public IDictionary<string, string> GetInfoLabels(params string[] labels) 
         {
-            this.client.LogMessage("XbmcSystem.GetInfoLabels(" + string.Join(", ", labels) + ")");
+            this.client.LogMessage("XBMC.GetInfoLabels(" + string.Join(", ", labels) + ")");
 
             if (labels == null)
             {
@@ -161,11 +161,13 @@ namespace XBMC.JsonRpc
                 throw new ArgumentException();
             }
 
-            JObject results = this.client.Call("System.GetInfoLabels", labels) as JObject;
+            JObject args = new JObject();
+            args.Add(new JProperty("labels", new JArray(labels))); 
+            JObject results = this.client.Call("XBMC.GetInfoLabels", args) as JObject;
             Dictionary<string, string> list = new Dictionary<string, string>();
             if (results == null)
             {
-                this.client.LogErrorMessage("System.GetInfoLabels(" + string.Join(", ", labels) + "): invalid response");
+                this.client.LogErrorMessage("XBMC.GetInfoLabels(" + string.Join(", ", labels) + "): invalid response");
 
                 return list;
             }
@@ -186,17 +188,19 @@ namespace XBMC.JsonRpc
 
         public string GetInfoLabel(string label)
         {
-            this.client.LogMessage("XbmcSystem.GetInfoLabel(" + label + ")");
+            this.client.LogMessage("XBMC.GetInfoLabel(" + label + ")");
 
             if (label == null)
             {
                 throw new ArgumentNullException("label");
             }
 
-            JObject result = this.client.Call("System.GetInfoLabels", new string[] { label }) as JObject;
+            JObject args = new JObject();
+            args.Add(new JProperty("labels", new JArray(label)));
+            JObject result = this.client.Call("XBMC.GetInfoLabels", args) as JObject;
             if (result == null || result[label] == null)
             {
-                this.client.LogErrorMessage("System.GetInfoLabels(" + label + "): invalid response");
+                this.client.LogErrorMessage("XBMC.GetInfoLabels(" + label + "): invalid response");
 
                 return null;
             }
@@ -206,7 +210,7 @@ namespace XBMC.JsonRpc
 
         public IDictionary<string, bool> GetInfoBooleans(params string[] labels)
         {
-            this.client.LogMessage("XbmcSystem.GetInfoBooleans(" + string.Join(", ", labels) + ")");
+            this.client.LogMessage("XBMC.GetInfoBooleans(" + string.Join(", ", labels) + ")");
 
             if (labels == null)
             {
@@ -217,11 +221,11 @@ namespace XBMC.JsonRpc
                 throw new ArgumentException();
             }
 
-            JObject results = this.client.Call("System.GetInfoBooleans", labels) as JObject;
+            JObject results = this.client.Call("XBMC.GetInfoBooleans", (object[]) labels) as JObject;
             Dictionary<string, bool> list = new Dictionary<string, bool>();
             if (results == null)
             {
-                this.client.LogErrorMessage("System.GetInfoBooleans(" + string.Join(", ", labels) + "): invalid response");
+                this.client.LogErrorMessage("XBMC.GetInfoBooleans(" + string.Join(", ", labels) + "): invalid response");
 
                 return list;
             }
@@ -242,17 +246,17 @@ namespace XBMC.JsonRpc
 
         public bool GetInfoBoolean(string label)
         {
-            this.client.LogMessage("XbmcSystem.GetInfoBoolean(" + label + ")");
+            this.client.LogMessage("XBMC.GetInfoBoolean(" + label + ")");
 
             if (label == null)
             {
                 throw new ArgumentNullException("label");
             }
 
-            JObject result = this.client.Call("System.GetInfoBooleans", new string[] { label }) as JObject;
+            JObject result = this.client.Call("XBMC.GetInfoBooleans", (object[]) new string[] { label }) as JObject;
             if (result == null || result[label] == null)
             {
-                this.client.LogErrorMessage("System.GetInfoBooleans(" + label + "): invalid response");
+                this.client.LogErrorMessage("XBMC.GetInfoBooleans(" + label + "): invalid response");
 
                 return false;
             }

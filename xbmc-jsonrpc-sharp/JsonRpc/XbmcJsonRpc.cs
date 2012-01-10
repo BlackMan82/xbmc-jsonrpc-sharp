@@ -78,7 +78,7 @@ namespace XBMC.JsonRpc
 
                 return permissions;
             }
-                
+
             foreach (string item in ((JArray)query["permission"]))
             {
                 permissions.Add(item);
@@ -119,7 +119,7 @@ namespace XBMC.JsonRpc
                 args.Add(new JProperty("data", message));
             }
 
-            this.client.Call("JSONRPC.Announce", args);
+            this.client.Call("JSONRPC.NotifyAll", args);
         }
 
         #endregion

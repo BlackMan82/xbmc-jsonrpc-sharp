@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json.Linq;
 
 namespace XBMC.JsonRpc
 {
@@ -19,67 +20,67 @@ namespace XBMC.JsonRpc
         #region Constructor
 
         internal XbmcVideoPlayer(JsonRpcClient client)
-            : base("VideoPlayer", client)
+            : base("VideoPlayer", client, 1)
         { }
 
         #endregion
 
         #region JSON RPC Calls
 
-        public bool BigSkipBackward()
-        {
-            return base.bigSkipBackward();
-        }
+        //public bool BigSkipBackward()
+        //{
+        //    return base.bigSkipBackward();
+        //}
 
-        public bool BigSkipForward()
-        {
-            return base.bigSkipForward();
-        }
+        //public bool BigSkipForward()
+        //{
+        //    return base.bigSkipForward();
+        //}
 
-        public bool SmallSkipBackward()
-        {
-            return base.smallSkipBackward();
-        }
+        //public bool SmallSkipBackward()
+        //{
+        //    return base.smallSkipBackward();
+        //}
 
-        public bool SmallSkipForward()
-        {
-            return base.smallSkipForward();
-        }
+        //public bool SmallSkipForward()
+        //{
+        //    return base.smallSkipForward();
+        //}
 
-        public bool Rewind()
-        {
-            return base.rewind();
-        }
+        //public bool Rewind()
+        //{
+        //    return base.rewind();
+        //}
 
-        public bool Forward()
-        {
-            return base.forward();
-        }
+        //public bool Forward()
+        //{
+        //    return base.forward();
+        //}
 
         public XbmcPlayerState GetTime(out TimeSpan currentPosition, out TimeSpan totalLength)
         {
             return base.getTime(out currentPosition, out totalLength);
         }
 
-        public int GetPercentage()
+        public double GetPercentage()
         {
             return base.getPercentage();
         }
 
-        public bool SeekTime(int seconds)
-        {
-            return base.seekTime(seconds);
-        }
+        //public bool SeekTime(int seconds)
+        //{
+        //    return base.seekTime(seconds);
+        //}
 
-        public bool SeekTime(TimeSpan position)
-        {
-            return this.SeekTime(Convert.ToInt32(position.TotalSeconds));
-        }
+        //public bool SeekTime(TimeSpan position)
+        //{
+        //    return this.SeekTime(Convert.ToInt32(position.TotalSeconds));
+        //}
 
-        public bool SeekPercentage(int percentage)
-        {
-            return base.seekPercentage(percentage);
-        }
+        //public bool SeekPercentage(int percentage)
+        //{
+        //    return base.seekPercentage(percentage);
+        //}
 
         #endregion
 
@@ -91,39 +92,49 @@ namespace XBMC.JsonRpc
             {
                 this.client.LogMessage("XbmcVideoPlayer.VideoCodec");
 
+
+
+                // TODO: InfoLabels are going to be deprecated! Use another way...
+                //{
+                //  "jsonrpc": "2.0",
+                //  "method": "VideoLibrary.GetMovieDetails",
+                //  "params": {"movieid" : 16, "properties" : ["streamdetails"]},
+                //  "id": 10
+                //}
+
                 return base.getInfo<string>("VideoPlayer.VideoCodec");
             }
         }
 
-        public virtual int Resolution
-        {
-            get
-            {
-                this.client.LogMessage("XbmcVideoPlayer.Resolution");
+        //public virtual int Resolution
+        //{
+        //    get
+        //    {
+        //        this.client.LogMessage("XbmcVideoPlayer.Resolution");
 
-                return base.getInfo<int>("VideoPlayer.VideoResolution");
-            }
-        }
+        //        return base.getInfo<int>("VideoPlayer.VideoResolution");
+        //    }
+        //}
 
-        public virtual double AspectRatio
-        {
-            get
-            {
-                this.client.LogMessage("XbmcVideoPlayer.AspectRatio");
+        //public virtual double AspectRatio
+        //{
+        //    get
+        //    {
+        //        this.client.LogMessage("XbmcVideoPlayer.AspectRatio");
 
-                return base.getInfo<double>("VideoPlayer.VideoAspect");
-            }
-        }
+        //        return base.getInfo<double>("VideoPlayer.VideoAspect");
+        //    }
+        //}
 
-        public virtual int AudioChannels
-        {
-            get
-            {
-                this.client.LogMessage("XbmcVideoPlayer.AudioChannels");
+        //public virtual int AudioChannels
+        //{
+        //    get
+        //    {
+        //        this.client.LogMessage("XbmcVideoPlayer.AudioChannels");
 
-                return base.getInfo<int>("VideoPlayer.AudioChannels");
-            }
-        }
+        //        return base.getInfo<int>("VideoPlayer.AudioChannels");
+        //    }
+        //}
 
         public virtual string AudioCodec
         {

@@ -58,10 +58,14 @@ namespace XBMC.JsonRpc
 
         static XbmcMovie()
         {
+            //fields = new string[] { "title", "genre", "year", "rating", "director", "file",
+            //                        "trailer", "tagline", "plot", "plotoutline", "originaltitle", 
+            //                        "lastplayed", "duration", "playcount", "writer", "studio", 
+            //                        "mpaa", "movieid" };
             fields = new string[] { "title", "genre", "year", "rating", "director", "file",
                                     "trailer", "tagline", "plot", "plotoutline", "originaltitle", 
                                     "lastplayed", "duration", "playcount", "writer", "studio", 
-                                    "mpaa", "movieid" };
+                                    "mpaa" };
         }
 
         private XbmcMovie(int id, string thumbnail, string fanart, string file,
