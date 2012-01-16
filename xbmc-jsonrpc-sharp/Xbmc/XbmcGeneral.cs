@@ -58,47 +58,66 @@ namespace XBMC.JsonRpc
         {
             this.client.LogMessage("XbmcGeneral.GetVolume()");
 
-            object volume = this.client.Call("XBMC.GetVolume");
-            if (volume == null) 
+            JObject properties = new JObject();
+            properties.Add(new JProperty("properties", new string[] { "volume", "muted" }));
+            JObject props = this.client.Call("Application.GetProperties", properties) as JObject;
+            if (props == null) 
             {
                 this.client.LogErrorMessage("XBMC.GetVolume(): Invalid response");
 
                 return -1;
             }
 
-            return (int)volume;
+            return (int) props["volume"];
         }
 
-        public bool SetVolume(int value)
+        public bool GetMuted()
         {
-            this.client.LogMessage("XbmcGeneral.SetVolume()");
+            this.client.LogMessage("XbmcGeneral.GetMuted()");
 
-            if (value < 0)
+            JObject properties = new JObject();
+            properties.Add(new JProperty("properties", new string[] { "volume", "muted" }));
+            JObject props = this.client.Call("Application.GetProperties", properties) as JObject;
+            if (props == null)
             {
-                value = 0;
-            }
-            else if (value > 100)
-            {
-                value = 100;
+                this.client.LogErrorMessage("XBMC.GetMuted(): Invalid response");
+
+                return ((int) props["volume"]) == 0;
             }
 
-            return (this.client.Call("XBMC.SetVolume", value) != null);
+            return (bool) props["muted"];
         }
 
-        public int ToggleMute()
-        {
-            this.client.LogMessage("XbmcGeneral.ToggleMute()");
+        //public bool SetVolume(int value)
+        //{
+        //    this.client.LogMessage("XbmcGeneral.SetVolume()");
 
-            object volume = this.client.Call("XBMC.ToggleMute");
-            if (volume == null) 
-            {
-                this.client.LogErrorMessage("XBMC.ToggleMute(): Invalid response");
+        //    if (value < 0)
+        //    {
+        //        value = 0;
+        //    }
+        //    else if (value > 100)
+        //    {
+        //        value = 100;
+        //    }
 
-                return -1;
-            }
+        //    return (this.client.Call("XBMC.SetVolume", value) != null);
+        //}
 
-            return (int)volume;
-        }
+        //public int ToggleMute()
+        //{
+        //    this.client.LogMessage("XbmcGeneral.ToggleMute()");
+
+        //    object volume = this.client.Call("XBMC.ToggleMute");
+        //    if (volume == null) 
+        //    {
+        //        this.client.LogErrorMessage("XBMC.ToggleMute(): Invalid response");
+
+        //        return -1;
+        //    }
+
+        //    return (int)volume;
+        //}
 
         public bool Log(string message)
         {
