@@ -19,28 +19,42 @@ namespace XBMC.JsonRpc
 
         #region Overrides of XbmcMediaPlaylist<XbmcVideo>
 
-        // TODO: Get current playing item information
-        //public override XbmcVideo GetCurrentItem(params string[] fields)
-        //{
-        //    this.client.LogMessage("XbmcVideoPlaylist.GetCurrentItem()");
+        public override XbmcVideo GetCurrentItem()
+        {
+            return this.GetCurrentItem(null);
+        }
 
-        //    JObject query = base.getItems(fields, XbmcVideo.Fields, -1, -1);
+        public override XbmcVideo GetCurrentItem(string[] fields)
+        {
+            this.client.LogMessage("XbmcVideoPlaylist.GetCurrentItem()");
 
-        //    if (query == null || query["result"] == null || (((JObject)query["result"])["items"]) == null)
-        //    {
-        //        this.client.LogErrorMessage("Playlist.GetItems(): Invalid response");
+            object[] properties;
 
-        //        return null;
-        //    }
+            if (fields == null)
+            {
+                properties = XbmcVideo.Fields;
+            }
+            else
+            {
+                properties = fields;
+            }
 
-        //    JArray items = (JArray)query["items"];
-        //    if (items.Count == 0)
-        //    {
-        //        return null;
-        //    }
+            JObject args = new JObject();
+            args.Add("playerid", this.id);
+            args.Add("properties", new JArray(properties));
+            JObject query = this.client.Call("Player.GetItem", args) as JObject;
 
-        //    return XbmcVideo.FromJson((JObject)items[0]);
-        //}
+            if (query == null || query["item"] == null)
+            {
+                this.client.LogErrorMessage("Playlist.GetCurrentItem(): Invalid response");
+
+                return null;
+            }
+
+            JObject item = (JObject) query["item"];
+
+            return XbmcVideo.FromJson(item);
+        }
 
         public override XbmcPlaylist<XbmcVideo> GetItems(params string[] fields)
         {

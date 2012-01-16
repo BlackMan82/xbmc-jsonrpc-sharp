@@ -8,7 +8,7 @@ namespace XBMC.JsonRpc {
         #region Private variables
 
         private string playlistName;
-        private int id;
+        protected int id;
 
         #endregion
 
@@ -54,8 +54,9 @@ namespace XBMC.JsonRpc {
             return (this.client.Call(this.playlistName + ".SkipNext") != null);
         }
 
-        // TODO: Get current playing item information
-        //public abstract TMediaType GetCurrentItem(params string[] fields);
+        public abstract TMediaType GetCurrentItem(string[] fields);
+
+        public abstract TMediaType GetCurrentItem();
 
         public abstract XbmcPlaylist<TMediaType> GetItems(params string[] fields);
 

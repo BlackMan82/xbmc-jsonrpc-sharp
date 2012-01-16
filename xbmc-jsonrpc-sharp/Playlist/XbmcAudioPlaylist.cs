@@ -19,28 +19,42 @@ namespace XBMC.JsonRpc
 
         #region Overrides of XbmcMediaPlaylist<XbmcVideo>
 
-        // TODO: Get current playing item information
-        //public override XbmcSong GetCurrentItem(params string[] fields)
-        //{
-        //    this.client.LogMessage("XbmcAudioPlaylist.GetCurrentItem()");
+        public override XbmcSong GetCurrentItem()
+        {
+            return this.GetCurrentItem(null);
+        }
 
-        //    JObject query = this.getItems(fields, XbmcSong.Fields, -1, -1);
-        //    if (query == null || query["result"] == null || (((JObject)query["result"])["items"]) == null)
-        //    {
-        //        this.client.LogErrorMessage("Playlist.GetItems(): Invalid response");
+        public override XbmcSong GetCurrentItem(string[] fields)
+        {
+            this.client.LogMessage("XbmcAudioPlaylist.GetCurrentItem()");
 
-        //        return null;
-        //    }
+            object[] properties;
 
-        //    int current = (int)query["result"]["items"];
-        //    JArray items = (JArray)query["items"];
-        //    if (current < 0 || items == null || current > items.Count)
-        //    {
-        //        return null;
-        //    }
+            if (fields == null)
+            {
+                properties = XbmcSong.Fields;
+            }
+            else
+            {
+                properties = fields;
+            }
 
-        //    return XbmcSong.FromJson((JObject)items[current]);
-        //}
+            JObject args = new JObject();
+            args.Add("playerid", this.id);
+            args.Add("properties", new JArray(properties));
+            JObject query = this.client.Call("Player.GetItem", args) as JObject;
+
+            if (query == null || query["item"] == null)
+            {
+                this.client.LogErrorMessage("Playlist.GetCurrentItem(): Invalid response");
+
+                return null;
+            }
+
+            JObject item = (JObject) query["item"];
+
+            return XbmcSong.FromJson(item);
+        }
 
         public override XbmcPlaylist<XbmcSong> GetItems(params string[] fields)
         {
