@@ -71,10 +71,14 @@ namespace XBMC.JsonRpc
 
         static XbmcTvEpisode()
         {
+            //fields = new string[] { "title", "year", "rating", 
+            //                        "director", "plot", "lastplayed", "showtitle", "firstaired", 
+            //                        "duration", "season", "episode", "playcount", "writer",
+            //                        "studio", "mpaa", "premiered", "episodeid" };
             fields = new string[] { "title", "year", "rating", 
                                     "director", "plot", "lastplayed", "showtitle", "firstaired", 
                                     "duration", "season", "episode", "playcount", "writer",
-                                    "studio", "mpaa", "premiered", "episodeid" };
+                                    "studio", "mpaa", "premiered" };
         }
 
         private XbmcTvEpisode(int id, string thumbnail, string fanart, string file, 
