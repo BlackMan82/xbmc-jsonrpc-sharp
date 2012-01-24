@@ -47,6 +47,7 @@ namespace XBMC.JsonRpc
                 {
                     if (this.socket == null || !this.socket.Connected)
                     {
+                        this.client.LogMessage("Result: Not alive");
                         return false;
                     }
                 }
@@ -59,9 +60,11 @@ namespace XBMC.JsonRpc
                 string ping = this.jsonRpc.Ping();
                 if (string.IsNullOrEmpty(ping) || string.CompareOrdinal(ping, PingResponse) != 0)
                 {
+                    this.client.LogMessage("Result: Not alive");
                     return false;
                 }
 
+                this.client.LogMessage("Result: Alive");
                 return true;
             }
         }
@@ -335,6 +338,24 @@ namespace XBMC.JsonRpc
             else if (string.CompareOrdinal(type, "System.OnLowBattery") == 0)
             {
                 this.system.OnLowBattery();
+            }
+            else if (string.CompareOrdinal(type, "VideoLibrary.OnUpdate") == 0)
+            {
+                // Rather do nothing - there can be lots of events like this when updating e.g. all episodes of a TV show
+                
+            }
+            else if (string.CompareOrdinal(type, "VideoLibrary.OnRemove") == 0)
+            {
+                // Rather do nothing - there can be lots of events like this when updating e.g. all episodes of a TV show
+
+            }
+            else if (string.CompareOrdinal(type, "GUI.OnScreensaverActivated") == 0)
+            {
+
+            }
+            else if (string.CompareOrdinal(type, "GUI.OnScreensaverDeactivated") == 0)
+            {
+
             }
         }
 
