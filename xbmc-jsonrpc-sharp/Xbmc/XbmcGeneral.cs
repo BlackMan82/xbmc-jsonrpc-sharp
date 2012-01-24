@@ -63,7 +63,7 @@ namespace XBMC.JsonRpc
             JObject props = this.client.Call("Application.GetProperties", properties) as JObject;
             if (props == null) 
             {
-                this.client.LogErrorMessage("XBMC.GetVolume(): Invalid response");
+                this.client.LogErrorMessage("Application.GetProperties(): Invalid response");
 
                 return -1;
             }
@@ -71,7 +71,7 @@ namespace XBMC.JsonRpc
             return (int) props["volume"];
         }
 
-        public bool GetMuted()
+        public int GetMuted()
         {
             this.client.LogMessage("XbmcGeneral.GetMuted()");
 
@@ -80,12 +80,13 @@ namespace XBMC.JsonRpc
             JObject props = this.client.Call("Application.GetProperties", properties) as JObject;
             if (props == null)
             {
-                this.client.LogErrorMessage("XBMC.GetMuted(): Invalid response");
+                this.client.LogErrorMessage("Application.GetProperties(): Invalid response");
 
-                return ((int) props["volume"]) == 0;
+                return -1;
             }
 
-            return (bool) props["muted"];
+            bool muted = (bool) props["muted"];
+            return muted ? 1 : 0;
         }
 
         //public bool SetVolume(int value)
@@ -147,163 +148,163 @@ namespace XBMC.JsonRpc
             return (this.client.Call("XBMC.Log", args) != null);
         }
 
-        public bool StartSlideshow(string directory)
-        {
-            this.client.LogMessage("XbmcGeneral.StartSliedshow(directory)");
+        //public bool StartSlideshow(string directory)
+        //{
+        //    this.client.LogMessage("XbmcGeneral.StartSliedshow(directory)");
 
-            if (string.IsNullOrEmpty(directory))
-            {
-                throw new ArgumentException();
-            }
+        //    if (string.IsNullOrEmpty(directory))
+        //    {
+        //        throw new ArgumentException();
+        //    }
 
-            return (this.client.Call("XBMC.StartSlideshow", directory) != null);
-        }
+        //    return (this.client.Call("XBMC.StartSlideshow", directory) != null);
+        //}
 
-        public bool StartSlideshow(string directory, bool random, bool recursive)
-        {
-            this.client.LogMessage("XbmcGeneral.StartSlideshow(directory, random, recursive)");
+        //public bool StartSlideshow(string directory, bool random, bool recursive)
+        //{
+        //    this.client.LogMessage("XbmcGeneral.StartSlideshow(directory, random, recursive)");
 
-            if (string.IsNullOrEmpty(directory))
-            {
-                throw new ArgumentException();
-            }
+        //    if (string.IsNullOrEmpty(directory))
+        //    {
+        //        throw new ArgumentException();
+        //    }
 
-            JObject args = new JObject();
-            args.Add(new JProperty("directory", directory));
-            args.Add(new JProperty("random", random));
-            args.Add(new JProperty("recursive", recursive));
+        //    JObject args = new JObject();
+        //    args.Add(new JProperty("directory", directory));
+        //    args.Add(new JProperty("random", random));
+        //    args.Add(new JProperty("recursive", recursive));
 
-            return (this.client.Call("XBMC.StartSlideshow", args) != null);
-        }
+        //    return (this.client.Call("XBMC.StartSlideshow", args) != null);
+        //}
 
-        public bool Play(string file)
-        {
-            this.client.LogMessage("XbmcGeneral.Play(" + file + ")");
+        //public bool Play(string file)
+        //{
+        //    this.client.LogMessage("XbmcGeneral.Play(" + file + ")");
 
-            if (string.IsNullOrEmpty(file))
-            {
-                throw new ArgumentException("file");
-            }
+        //    if (string.IsNullOrEmpty(file))
+        //    {
+        //        throw new ArgumentException("file");
+        //    }
 
-            JObject args = new JObject();
-            args.Add(new JProperty("file", file));
+        //    JObject args = new JObject();
+        //    args.Add(new JProperty("file", file));
 
-            return (this.client.Call("XBMC.Play", args) != null);
-        }
+        //    return (this.client.Call("XBMC.Play", args) != null);
+        //}
 
-        public bool Play(XbmcArtist artist)
-        {
-            this.client.LogMessage("XbmcGeneral.Play(artist)");
+        //public bool Play(XbmcArtist artist)
+        //{
+        //    this.client.LogMessage("XbmcGeneral.Play(artist)");
 
-            if (artist == null)
-            {
-                throw new ArgumentNullException("artist");
-            }
-            if (artist.Id < 0)
-            {
-                throw new ArgumentException("Invalid artist ID");
-            }
+        //    if (artist == null)
+        //    {
+        //        throw new ArgumentNullException("artist");
+        //    }
+        //    if (artist.Id < 0)
+        //    {
+        //        throw new ArgumentException("Invalid artist ID");
+        //    }
 
-            JObject args = new JObject();
-            args.Add(new JProperty("artistid", artist.Id));
+        //    JObject args = new JObject();
+        //    args.Add(new JProperty("artistid", artist.Id));
 
-            return (this.client.Call("XBMC.Play", args) != null);
-        }
+        //    return (this.client.Call("XBMC.Play", args) != null);
+        //}
 
-        public bool Play(XbmcAlbum album)
-        {
-            this.client.LogMessage("XbmcGeneral.Play(album)");
+        //public bool Play(XbmcAlbum album)
+        //{
+        //    this.client.LogMessage("XbmcGeneral.Play(album)");
 
-            if (album == null)
-            {
-                throw new ArgumentNullException("album");
-            }
-            if (album.Id < 0)
-            {
-                throw new ArgumentException("Invalid album ID");
-            }
+        //    if (album == null)
+        //    {
+        //        throw new ArgumentNullException("album");
+        //    }
+        //    if (album.Id < 0)
+        //    {
+        //        throw new ArgumentException("Invalid album ID");
+        //    }
 
-            JObject args = new JObject();
-            args.Add(new JProperty("albumid", album.Id));
+        //    JObject args = new JObject();
+        //    args.Add(new JProperty("albumid", album.Id));
 
-            return (this.client.Call("XBMC.Play", args) != null);
-        }
+        //    return (this.client.Call("XBMC.Play", args) != null);
+        //}
 
-        public bool Play(XbmcSong song)
-        {
-            this.client.LogMessage("XbmcGeneral.Play(song)");
+        //public bool Play(XbmcSong song)
+        //{
+        //    this.client.LogMessage("XbmcGeneral.Play(song)");
 
-            if (song == null)
-            {
-                throw new ArgumentNullException("song");
-            }
-            if (song.Id < 0)
-            {
-                throw new ArgumentException("Invalid song ID");
-            }
+        //    if (song == null)
+        //    {
+        //        throw new ArgumentNullException("song");
+        //    }
+        //    if (song.Id < 0)
+        //    {
+        //        throw new ArgumentException("Invalid song ID");
+        //    }
 
-            JObject args = new JObject();
-            args.Add(new JProperty("songid", song.Id));
+        //    JObject args = new JObject();
+        //    args.Add(new JProperty("songid", song.Id));
 
-            return (this.client.Call("XBMC.Play", args) != null);
-        }
+        //    return (this.client.Call("XBMC.Play", args) != null);
+        //}
 
-        public bool Play(XbmcMusicVideo musicVideo)
-        {
-            this.client.LogMessage("XbmcGeneral.Play(musicVideo)");
+        //public bool Play(XbmcMusicVideo musicVideo)
+        //{
+        //    this.client.LogMessage("XbmcGeneral.Play(musicVideo)");
 
-            if (musicVideo == null)
-            {
-                throw new ArgumentNullException("musicVideo");
-            }
-            if (musicVideo.Id < 0)
-            {
-                throw new ArgumentException("Invalid musicVideo ID");
-            }
+        //    if (musicVideo == null)
+        //    {
+        //        throw new ArgumentNullException("musicVideo");
+        //    }
+        //    if (musicVideo.Id < 0)
+        //    {
+        //        throw new ArgumentException("Invalid musicVideo ID");
+        //    }
 
-            JObject args = new JObject();
-            args.Add(new JProperty("musicvideoid", musicVideo.Id));
+        //    JObject args = new JObject();
+        //    args.Add(new JProperty("musicvideoid", musicVideo.Id));
 
-            return (this.client.Call("XBMC.Play", args) != null);
-        }
+        //    return (this.client.Call("XBMC.Play", args) != null);
+        //}
 
-        public bool Play(XbmcTvEpisode episode)
-        {
-            this.client.LogMessage("XbmcGeneral.Play(episode)");
+        //public bool Play(XbmcTvEpisode episode)
+        //{
+        //    this.client.LogMessage("XbmcGeneral.Play(episode)");
 
-            if (episode == null)
-            {
-                throw new ArgumentNullException("episode");
-            }
-            if (episode.Id < 0)
-            {
-                throw new ArgumentException("Invalid episode ID");
-            }
+        //    if (episode == null)
+        //    {
+        //        throw new ArgumentNullException("episode");
+        //    }
+        //    if (episode.Id < 0)
+        //    {
+        //        throw new ArgumentException("Invalid episode ID");
+        //    }
 
-            JObject args = new JObject();
-            args.Add(new JProperty("episodeid", episode.Id));
+        //    JObject args = new JObject();
+        //    args.Add(new JProperty("episodeid", episode.Id));
 
-            return (this.client.Call("XBMC.Play", args) != null);
-        }
+        //    return (this.client.Call("XBMC.Play", args) != null);
+        //}
 
-        public bool Play(XbmcMovie movie)
-        {
-            this.client.LogMessage("XbmcGeneral.Play(movie)");
+        //public bool Play(XbmcMovie movie)
+        //{
+        //    this.client.LogMessage("XbmcGeneral.Play(movie)");
 
-            if (movie == null)
-            {
-                throw new ArgumentNullException("movie");
-            }
-            if (movie.Id < 0)
-            {
-                throw new ArgumentException("Invalid movie ID");
-            }
+        //    if (movie == null)
+        //    {
+        //        throw new ArgumentNullException("movie");
+        //    }
+        //    if (movie.Id < 0)
+        //    {
+        //        throw new ArgumentException("Invalid movie ID");
+        //    }
 
-            JObject args = new JObject();
-            args.Add(new JProperty("movieid", movie.Id));
+        //    JObject args = new JObject();
+        //    args.Add(new JProperty("movieid", movie.Id));
 
-            return (this.client.Call("XBMC.Play", args) != null);
-        }
+        //    return (this.client.Call("XBMC.Play", args) != null);
+        //}
 
         public bool Quit()
         {

@@ -78,7 +78,7 @@ namespace XBMC.JsonRpc
             fields = new string[] { "title", "year", "rating", 
                                     "director", "plot", "lastplayed", "showtitle", "firstaired", 
                                     "duration", "season", "episode", "playcount", "writer",
-                                    "studio", "mpaa", "premiered" };
+                                    "studio", "mpaa", "premiered", "id"};
         }
 
         private XbmcTvEpisode(int id, string thumbnail, string fanart, string file, 
@@ -117,7 +117,8 @@ namespace XBMC.JsonRpc
 
             try 
             {
-                return new XbmcTvEpisode(JsonRpcClient.GetField<int>(obj, "episodeid"),
+                //return new XbmcTvEpisode(JsonRpcClient.GetField<int>(obj, "episodeid"),
+                return new XbmcTvEpisode(JsonRpcClient.GetField<int>(obj, "id"),
                                          JsonRpcClient.GetField<string>(obj, "thumbnail"),
                                          JsonRpcClient.GetField<string>(obj, "fanart"),
                                          JsonRpcClient.GetField<string>(obj, "file"),

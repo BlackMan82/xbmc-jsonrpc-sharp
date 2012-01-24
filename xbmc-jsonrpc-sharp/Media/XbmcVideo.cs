@@ -155,7 +155,7 @@ namespace XBMC.JsonRpc
                                     "director", "trailer", "tagline", "plot", "plotoutline",
                                     "originaltitle", "lastplayed", "showtitle", "firstaired", "duration",
                                     "season", "episode", "runtime", "playcount", "writer",
-                                    "studio", "mpaa", "premiered", "album" };
+                                    "studio", "mpaa", "premiered", "album", "id" };
         }
 
         protected XbmcVideo(int id, string thumbnail, string fanart,

@@ -40,14 +40,16 @@ namespace XBMC.JsonRpc
             {
                 args.Add(new JProperty("fields", XbmcMovie.Fields));
             }
+            JObject limits = new JObject();
             if (start >= 0)
             {
-                args.Add(new JProperty("start", start));
+                limits.Add(new JProperty("start", start));
             }
             if (end >= 0)
             {
-                args.Add(new JProperty("end", end));
+                limits.Add(new JProperty("end", end));
             }
+            args.Add(new JProperty("limits", limits));
 
             JObject query = this.client.Call("VideoLibrary.GetMovies", args) as JObject;
             if (query == null || query["movies"] == null)
@@ -88,14 +90,17 @@ namespace XBMC.JsonRpc
             {
                 args.Add(new JProperty("fields", XbmcTvShow.Fields));
             }
+            JObject limits = new JObject();
             if (start >= 0)
             {
-                args.Add(new JProperty("start", start));
+                limits.Add(new JProperty("start", start));
             }
             if (end >= 0)
             {
-                args.Add(new JProperty("end", end));
+                limits.Add(new JProperty("end", end));
             }
+            args.Add(new JProperty("limits", limits));
+            
 
             JObject query = this.client.Call("VideoLibrary.GetTVShows", args) as JObject;
             if (query == null || query["tvshows"] == null)
@@ -208,10 +213,14 @@ namespace XBMC.JsonRpc
             if (fields != null && fields.Length > 0)
             {
                 string[] fieldCopy = new string[fields.Length + 4];
+                //fieldCopy[0] = "musicvideoid";
+                //fieldCopy[0] = "title";
+                //fieldCopy[1] = "artist";
+                //fieldCopy[1] = "album";
                 fieldCopy[0] = "musicvideoid";
-                fieldCopy[0] = "title";
-                fieldCopy[1] = "artist";
-                fieldCopy[1] = "album";
+                fieldCopy[1] = "title";
+                fieldCopy[2] = "artist";
+                fieldCopy[3] = "album";
                 Array.Copy(fields, 0, fieldCopy, 4, fields.Length);
                 args.Add(new JProperty("fields", fieldCopy));
             }
@@ -219,14 +228,16 @@ namespace XBMC.JsonRpc
             {
                 args.Add(new JProperty("fields", XbmcMusicVideo.Fields));
             }
+            JObject limits = new JObject();
             if (start >= 0)
             {
-                args.Add(new JProperty("start", start));
+                limits.Add(new JProperty("start", start));
             }
             if (end >= 0)
             {
-                args.Add(new JProperty("end", end));
+                limits.Add(new JProperty("end", end));
             }
+            args.Add(new JProperty("limits", limits));
 
             JObject query = this.client.Call("VideoLibrary.GetMusicVideos", args) as JObject;
             if (query == null || query["musicvideos"] == null)
@@ -307,14 +318,16 @@ namespace XBMC.JsonRpc
             {
                 args.Add(new JProperty("fields", XbmcMovie.Fields));
             }
+            JObject limits = new JObject();
             if (start >= 0)
             {
-                args.Add(new JProperty("start", start));
+                limits.Add(new JProperty("start", start));
             }
             if (end >= 0)
             {
-                args.Add(new JProperty("end", end));
+                limits.Add(new JProperty("end", end));
             }
+            args.Add(new JProperty("limits", limits));
 
             JObject query = this.client.Call("VideoLibrary.GetRecentlyAddedMovies", args) as JObject;
             if (query == null || query["movies"] == null)
@@ -346,11 +359,16 @@ namespace XBMC.JsonRpc
             if (fields != null && fields.Length > 0)
             {
                 string[] fieldCopy = new string[fields.Length + 5];
-                fieldCopy[0] = "episodeid";
-                fieldCopy[0] = "title";
-                fieldCopy[1] = "season";
-                fieldCopy[1] = "episode";
-                fieldCopy[2] = "showtitle";
+                //fieldCopy[0] = "episodeid";
+                //fieldCopy[0] = "title";
+                //fieldCopy[1] = "season";
+                //fieldCopy[1] = "episode";
+                //fieldCopy[2] = "showtitle";
+                fieldCopy[0] = "id";
+                fieldCopy[1] = "title";
+                fieldCopy[2] = "season";
+                fieldCopy[3] = "episode";
+                fieldCopy[4] = "showtitle";
                 Array.Copy(fields, 0, fieldCopy, 5, fields.Length);
                 args.Add(new JProperty("fields", fieldCopy));
             }
@@ -358,14 +376,16 @@ namespace XBMC.JsonRpc
             {
                 args.Add(new JProperty("fields", XbmcTvEpisode.Fields));
             }
+            JObject limits = new JObject();
             if (start >= 0)
             {
-                args.Add(new JProperty("start", start));
+                limits.Add(new JProperty("start", start));
             }
             if (end >= 0)
             {
-                args.Add(new JProperty("end", end));
+                limits.Add(new JProperty("end", end));
             }
+            args.Add(new JProperty("limits", limits));
 
             JObject query = this.client.Call("VideoLibrary.GetRecentlyAddedEpisodes", args) as JObject;
             if (query == null || query["episodes"] == null)
@@ -397,10 +417,14 @@ namespace XBMC.JsonRpc
             if (fields != null && fields.Length > 0)
             {
                 string[] fieldCopy = new string[fields.Length + 4];
+                //fieldCopy[0] = "musicvideoid";
+                //fieldCopy[0] = "title";
+                //fieldCopy[1] = "artist";
+                //fieldCopy[1] = "album";
                 fieldCopy[0] = "musicvideoid";
-                fieldCopy[0] = "title";
-                fieldCopy[1] = "artist";
-                fieldCopy[1] = "album";
+                fieldCopy[1] = "title";
+                fieldCopy[2] = "artist";
+                fieldCopy[3] = "album";
                 Array.Copy(fields, 0, fieldCopy, 4, fields.Length);
                 args.Add(new JProperty("fields", fieldCopy));
             }
@@ -408,14 +432,16 @@ namespace XBMC.JsonRpc
             {
                 args.Add(new JProperty("fields", XbmcMusicVideo.Fields));
             }
+            JObject limits = new JObject();
             if (start >= 0)
             {
-                args.Add(new JProperty("start", start));
+                limits.Add(new JProperty("start", start));
             }
             if (end >= 0)
             {
-                args.Add(new JProperty("end", end));
+                limits.Add(new JProperty("end", end));
             }
+            args.Add(new JProperty("limits", limits));
 
             JObject query = this.client.Call("VideoLibrary.GetRecentlyAddedMusicVideos", args) as JObject;
             if (query == null || query["musicvideos"] == null)
@@ -462,14 +488,16 @@ namespace XBMC.JsonRpc
             {
                 args.Add(new JProperty("fields", XbmcTvSeason.Fields));
             }
+            JObject limits = new JObject();
             if (start >= 0)
             {
-                args.Add(new JProperty("start", start));
+                limits.Add(new JProperty("start", start));
             }
             if (end >= 0)
             {
-                args.Add(new JProperty("end", end));
+                limits.Add(new JProperty("end", end));
             }
+            args.Add(new JProperty("limits", limits));
 
             JObject query = this.client.Call("VideoLibrary.GetSeasons", args) as JObject;
             if (query == null || query["seasons"] == null)
@@ -507,11 +535,17 @@ namespace XBMC.JsonRpc
             if (fields != null && fields.Length > 0)
             {
                 string[] fieldCopy = new string[fields.Length + 5];
-                fieldCopy[0] = "episodeid";
-                fieldCopy[0] = "title";
-                fieldCopy[1] = "season";
-                fieldCopy[1] = "episode";
-                fieldCopy[2] = "showtitle";
+                //fieldCopy[0] = "episodeid";
+                //fieldCopy[0] = "id";
+                //fieldCopy[0] = "title";
+                //fieldCopy[1] = "season";
+                //fieldCopy[1] = "episode";
+                //fieldCopy[2] = "showtitle";
+                fieldCopy[0] = "id";
+                fieldCopy[1] = "title";
+                fieldCopy[2] = "season";
+                fieldCopy[3] = "episode";
+                fieldCopy[4] = "showtitle";
                 Array.Copy(fields, 0, fieldCopy, 5, fields.Length);
                 args.Add(new JProperty("fields", fieldCopy));
             }
@@ -519,14 +553,16 @@ namespace XBMC.JsonRpc
             {
                 args.Add(new JProperty("fields", XbmcTvEpisode.Fields));
             }
+            JObject limits = new JObject();
             if (start >= 0)
             {
-                args.Add(new JProperty("start", start));
+                limits.Add(new JProperty("start", start));
             }
             if (end >= 0)
             {
-                args.Add(new JProperty("end", end));
+                limits.Add(new JProperty("end", end));
             }
+            args.Add(new JProperty("limits", limits));
 
             JObject query = this.client.Call("VideoLibrary.GetEpisodes", args) as JObject;
             if (query == null || query["episodes"] == null)
