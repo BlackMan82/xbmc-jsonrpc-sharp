@@ -12,9 +12,43 @@
     <AssemblyName>XBMCJsonRpcSharp</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -27,80 +61,46 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>bin\x86\Release\XBMCJsonRpcSharp.XML</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
-    <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
-    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>bin\x64\Release\XBMCJsonRpcSharp.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
-    <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json.Net20">
-      <HintPath>..\lib\Newtonsoft.Json.Net20.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Web" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="XbmcJsonRpcLogErrorEventArgs.cs" />
     <Compile Include="Files\XbmcFiles.cs" />
     <Compile Include="Files\XbmcFileSource.cs" />
     <Compile Include="InvalidJsonRpcResponseException.cs" />
     <Compile Include="JsonRpcClient.cs" />
     <Compile Include="JsonRpcErrorException.cs" />
+    <Compile Include="JsonRpc\XbmcJsonRpc.cs" />
     <Compile Include="JsonRpc\XbmcJsonRpcMethod.cs" />
-    <Compile Include="Library\XbmcLibrary.cs" />
-    <Compile Include="Library\XbmcVideoLibrary.cs" />
     <Compile Include="Library\XbmcAudioLibrary.cs" />
+    <Compile Include="Library\XbmcLibrary.cs" />
     <Compile Include="Library\XbmcMediaLibrary.cs" />
-    <Compile Include="Media\XbmcMusicVideo.cs" />
+    <Compile Include="Library\XbmcVideoLibrary.cs" />
+    <Compile Include="Media\XbmcAlbum.cs" />
+    <Compile Include="Media\XbmcArtist.cs" />
+    <Compile Include="Media\XbmcAudio.cs" />
     <Compile Include="Media\XbmcMedia.cs" />
+    <Compile Include="Media\XbmcMediaType.cs" />
+    <Compile Include="Media\XbmcMovie.cs" />
+    <Compile Include="Media\XbmcMusicVideo.cs" />
     <Compile Include="Media\XbmcPlayable.cs" />
     <Compile Include="Media\XbmcPlaylist.cs" />
     <Compile Include="Media\XbmcSong.cs" />
     <Compile Include="Media\XbmcTvEpisode.cs" />
-    <Compile Include="Media\XbmcAlbum.cs" />
     <Compile Include="Media\XbmcTvSeason.cs" />
     <Compile Include="Media\XbmcTvShow.cs" />
-    <Compile Include="Media\XbmcArtist.cs" />
-    <Compile Include="Media\XbmcMovie.cs" />
     <Compile Include="Media\XbmcVideo.cs" />
-    <Compile Include="Media\XbmcAudio.cs" />
-    <Compile Include="Media\XbmcMediaType.cs" />
-    <Compile Include="Player\XbmcPlayerPlaybackSpeedChangedEventArgs.cs" />
-    <Compile Include="Player\XbmcPicturePlayer.cs" />
-    <Compile Include="Player\XbmcPlayerPlaybackChangedEventArgs.cs" />
-    <Compile Include="Player\XbmcPlayerPlaybackPositionChangedEventArgs.cs" />
-    <Compile Include="Player\XbmcVideoPlayer.cs" />
     <Compile Include="Player\XbmcAudioPlayer.cs" />
     <Compile Include="Player\XbmcMediaPlayer.cs" />
+    <Compile Include="Player\XbmcPicturePlayer.cs" />
     <Compile Include="Player\XbmcPlayer.cs" />
+    <Compile Include="Player\XbmcPlayerPlaybackChangedEventArgs.cs" />
+    <Compile Include="Player\XbmcPlayerPlaybackPositionChangedEventArgs.cs" />
+    <Compile Include="Player\XbmcPlayerPlaybackSpeedChangedEventArgs.cs" />
     <Compile Include="Player\XbmcPlayerState.cs" />
+    <Compile Include="Player\XbmcVideoPlayer.cs" />
     <Compile Include="Playlist\XbmcAudioPlaylist.cs" />
     <Compile Include="Playlist\XbmcMediaPlaylist.cs" />
     <Compile Include="Playlist\XbmcPlaylist.cs" />
@@ -110,18 +110,25 @@
     <Compile Include="SocketStateObject.cs" />
     <Compile Include="System\XbmcSystem.cs" />
     <Compile Include="UnknownJsonRpcErrorException.cs" />
-    <Compile Include="JsonRpc\XbmcJsonRpc.cs" />
     <Compile Include="XbmcJsonRpcConnection.cs" />
+    <Compile Include="XbmcJsonRpcLogErrorEventArgs.cs" />
     <Compile Include="XbmcJsonRpcLogEventArgs.cs" />
     <Compile Include="XbmcJsonRpcNamespace.cs" />
     <Compile Include="Xbmc\XbmcGeneral.cs" />
     <Compile Include="Xbmc\XbmcLogLevel.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="JsonRpcAnnouncements.txt" />
     <Content Include="JsonRpcMethods.txt" />
     <Content Include="XbmcInfoLabels.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json.Net20, Version=3.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\Newtonsoft.Json.Net20.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Web" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
