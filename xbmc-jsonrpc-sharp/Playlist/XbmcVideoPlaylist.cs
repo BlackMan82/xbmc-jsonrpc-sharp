@@ -46,7 +46,7 @@ namespace XBMC.JsonRpc
 
             if (query == null || query["item"] == null)
             {
-                this.client.LogErrorMessage("Playlist.GetCurrentItem(): Invalid response");
+                this.client.LogErrorMessage("XbmcVideoPlaylist.GetCurrentItem(): Invalid response");
 
                 return null;
             }

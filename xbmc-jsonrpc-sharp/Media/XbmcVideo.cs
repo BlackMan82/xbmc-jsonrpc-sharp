@@ -151,11 +151,16 @@ namespace XBMC.JsonRpc
 
         static XbmcVideo()
         {
+            //fields = new string[] { "title", "artist", "genre", "year", "rating", 
+            //                        "director", "trailer", "tagline", "plot", "plotoutline",
+            //                        "originaltitle", "lastplayed", "showtitle", "firstaired", "duration",
+            //                        "season", "episode", "runtime", "playcount", "writer",
+            //                        "studio", "mpaa", "premiered", "album", "id" };
             fields = new string[] { "title", "artist", "genre", "year", "rating", 
                                     "director", "trailer", "tagline", "plot", "plotoutline",
                                     "originaltitle", "lastplayed", "showtitle", "firstaired", "duration",
                                     "season", "episode", "runtime", "playcount", "writer",
-                                    "studio", "mpaa", "premiered", "album", "id" };
+                                    "studio", "mpaa", "premiered", "album" };
         }
 
         protected XbmcVideo(int id, string thumbnail, string fanart,
@@ -164,6 +169,7 @@ namespace XBMC.JsonRpc
                           string outline, string originalTitle, string lastPlayed, int duration, string writer,
                           string mpaa, string showTitle, int season, int episodeCount, string premiered,
                           string firstAired, string artist, string album)
+                          //string firstAired, string artist)
             : base(id, thumbnail, fanart,
                    title, genre, year, rating)
         {
