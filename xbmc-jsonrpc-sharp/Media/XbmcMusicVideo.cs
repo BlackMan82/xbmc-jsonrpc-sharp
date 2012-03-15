@@ -106,6 +106,11 @@ namespace XBMC.JsonRpc
 
         internal static new XbmcMusicVideo FromJson(JObject obj)
         {
+            return FromJson(obj, null);
+        }
+
+        internal static new XbmcMusicVideo FromJson(JObject obj, JsonRpcClient logger)
+        {
             if (obj == null)
             {
                 throw new ArgumentNullException("obj");
@@ -132,6 +137,7 @@ namespace XBMC.JsonRpc
             }
             catch (Exception ex)
             {
+                if (logger != null) logger.LogErrorMessage("EXCEPTION in XbmcMusicVideo.FromJson()!!!", ex);
                 return null;
             }
         }

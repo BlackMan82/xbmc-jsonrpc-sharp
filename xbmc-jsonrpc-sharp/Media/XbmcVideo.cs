@@ -156,7 +156,8 @@ namespace XBMC.JsonRpc
             //                        "originaltitle", "lastplayed", "showtitle", "firstaired", "duration",
             //                        "season", "episode", "runtime", "playcount", "writer",
             //                        "studio", "mpaa", "premiered", "album", "id" };
-            fields = new string[] { "title", "artist", "genre", "year", "rating", 
+            //fields = new string[] { "title", "artist", "genre", "year", "rating",
+            fields = new string[] { "title", "artist", "genre", "year", "rating", "file", 
                                     "director", "trailer", "tagline", "plot", "plotoutline",
                                     "originaltitle", "lastplayed", "showtitle", "firstaired", "duration",
                                     "season", "episode", "runtime", "playcount", "writer",
@@ -169,7 +170,6 @@ namespace XBMC.JsonRpc
                           string outline, string originalTitle, string lastPlayed, int duration, string writer,
                           string mpaa, string showTitle, int season, int episodeCount, string premiered,
                           string firstAired, string artist, string album)
-                          //string firstAired, string artist)
             : base(id, thumbnail, fanart,
                    title, genre, year, rating)
         {
@@ -204,6 +204,11 @@ namespace XBMC.JsonRpc
 
         internal static XbmcVideo FromJson(JObject obj)
         {
+            return FromJson(obj, null);
+        }
+
+        internal static XbmcVideo FromJson(JObject obj, JsonRpcClient logger)
+        {
             if (obj == null)
             {
                 return null;
@@ -215,19 +220,26 @@ namespace XBMC.JsonRpc
                 //if (obj["showtitle"] != null && !string.IsNullOrEmpty(JsonRpcClient.GetField<string>(obj, "showtitle")))
                 if (obj["type"] != null && "episode" == JsonRpcClient.GetField<string>(obj, "type"))
                 {
-                    return XbmcTvEpisode.FromJson(obj);
+                    if (logger != null) logger.LogMessage("Trying to identify TV episode");
+                    return XbmcTvEpisode.FromJson(obj, logger);
                 }
                 // If there is a artist field and it has a vaue, the retrieved item is a XbmcMusicVideo
                 if (obj["artist"] != null && !string.IsNullOrEmpty(JsonRpcClient.GetField<string>(obj, "artist")))
                 {
-                    return XbmcMusicVideo.FromJson(obj);
+                    if (logger != null) logger.LogMessage("Trying to identify Music video");
+                    return XbmcMusicVideo.FromJson(obj, logger);
                 }
 
                 // Otherwise it must be a movie
-                return XbmcMovie.FromJson(obj);
+                //else if () 
+                //{
+                if (logger != null) logger.LogMessage("Trying to identify Movie");
+                return XbmcMovie.FromJson(obj, logger);
+                //}
             }
             catch (Exception ex)
             {
+                if (logger != null) logger.LogErrorMessage("EXCEPTION in XbmcVideo.FromJson()!!!", ex);
                 return null;
             }
         }

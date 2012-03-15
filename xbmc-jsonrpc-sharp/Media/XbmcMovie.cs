@@ -89,6 +89,10 @@ namespace XBMC.JsonRpc
 
         internal static new XbmcMovie FromJson(JObject obj)
         {
+            return FromJson(obj, null);
+        }
+        internal static new XbmcMovie FromJson(JObject obj, JsonRpcClient logger)
+        {
             if (obj == null)
             {
                 return null;
@@ -96,6 +100,7 @@ namespace XBMC.JsonRpc
 
             try
             {
+                // TODO: Remove unsupported label (e.g. 'movieid')
                 return new XbmcMovie(JsonRpcClient.GetField<int>(obj, "movieid"),
                                      JsonRpcClient.GetField<string>(obj, "thumbnail"),
                                      JsonRpcClient.GetField<string>(obj, "fanart"),
@@ -119,6 +124,7 @@ namespace XBMC.JsonRpc
             }
             catch (Exception ex)
             {
+                if (logger != null) logger.LogErrorMessage("EXCEPTION in XbmcMovie.FromJson()!!!", ex);
                 return null;
             }
         }

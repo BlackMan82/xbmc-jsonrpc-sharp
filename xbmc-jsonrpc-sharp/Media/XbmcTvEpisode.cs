@@ -75,7 +75,8 @@ namespace XBMC.JsonRpc
             //                        "director", "plot", "lastplayed", "showtitle", "firstaired", 
             //                        "duration", "season", "episode", "playcount", "writer",
             //                        "studio", "mpaa", "premiered", "episodeid" };
-            fields = new string[] { "title", "year", "rating", 
+            //fields = new string[] { "title", "year", "rating", 
+            fields = new string[] { "title", "year", "rating", "file",
                                     "director", "plot", "lastplayed", "showtitle", "firstaired", 
                                     "duration", "season", "episode", "playcount", "writer",
                                     "studio", "mpaa", "premiered", "id"};
@@ -110,6 +111,11 @@ namespace XBMC.JsonRpc
 
         internal static new XbmcTvEpisode FromJson(JObject obj)
         {
+            return FromJson(obj, null);
+        }
+
+        internal static new XbmcTvEpisode FromJson(JObject obj, JsonRpcClient logger)
+        {
             if (obj == null)
             {
                 return null;
@@ -141,6 +147,7 @@ namespace XBMC.JsonRpc
             }
             catch (Exception ex)
             {
+                if (logger != null) logger.LogErrorMessage("EXCEPTION in XbmcTvEpisode.FromJson()!!!", ex);
                 return null;
             }
         }

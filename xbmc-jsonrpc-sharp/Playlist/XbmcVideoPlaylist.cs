@@ -26,6 +26,8 @@ namespace XBMC.JsonRpc
 
         public override XbmcVideo GetCurrentItem(string[] fields)
         {
+            XbmcVideo result;
+            
             this.client.LogMessage("XbmcVideoPlaylist.GetCurrentItem()");
 
             object[] properties;
@@ -53,7 +55,13 @@ namespace XBMC.JsonRpc
 
             JObject item = (JObject) query["item"];
 
-            return XbmcVideo.FromJson(item);
+            this.client.LogMessage("Trying to identify the item from JSON");
+            if (item == null) this.client.LogMessage("Item is null!!!");
+            result = XbmcVideo.FromJson(item, this.client);
+            //this.client.LogMessage("Result from JSON: " + result.ToString());
+            if (result == null) this.client.LogMessage("Result is null!!!");
+            return result;
+            //return XbmcVideo.FromJson(item);
         }
 
         public override XbmcPlaylist<XbmcVideo> GetItems(params string[] fields)
