@@ -7,7 +7,21 @@ namespace XBMC.JsonRpc
     {
         #region Private variables
 
-        protected static string[] fields;
+        protected static string[] fields = new string[] 
+            {"title", "artist", "albumartist", "genre", "year", "rating", "album", "track", "duration", "comment", "lyrics", "musicbrainztrackid", "musicbrainzartistid", 
+             "musicbrainzalbumid", "musicbrainzalbumartistid", "playcount", "fanart", "director", "trailer", "tagline", "plot", "plotoutline", "originaltitle", "lastplayed", 
+             "writer", "studio", "mpaa", 
+             //"cast", 
+             "country", "imdbnumber", "premiered", "productioncode", "runtime", "set", "showlink", "streamdetails", "top250", 
+             "votes", "firstaired", "season", "episode", "showtitle", "thumbnail", "file", 
+             //"resume", 
+             "artistid", "albumid", "tvshowid", "setid"};
+            
+            
+            //{"title", "genre", "year", "rating", "director", "file",
+            //                        "trailer", "tagline", "plot", "plotoutline", "originaltitle", 
+            //                        "lastplayed", "duration", "playcount", "writer", "studio", 
+            //                        "mpaa" };
 
         private int id;
 

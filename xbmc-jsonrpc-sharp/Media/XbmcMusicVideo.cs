@@ -66,21 +66,21 @@ namespace XBMC.JsonRpc
 
         #region Internal variables
 
-        internal static new string[] Fields
-        {
-            get { return (fields != null ? fields : new string[0]); }
-        }
+        //internal static new string[] Fields
+        //{
+        //    get { return (fields != null ? fields : new string[0]); }
+        //}
 
         #endregion
 
         #region Constructors
 
-        static XbmcMusicVideo()
-        {
-            fields = new string[] { "title", "artist", "genre", "year", "rating", "file",
-                                    "director", "plot", "lastplayed", "duration",
-                                    "playcount", "studio", "album", "musicvideoid" };
-        }
+        //static XbmcMusicVideo()
+        //{
+        //    fields = new string[] { "title", "artist", "genre", "year", "rating", "file",
+        //                            "director", "plot", "lastplayed", "duration",
+        //                            "playcount", "studio", "album", "musicvideoid" };
+        //}
 
         private XbmcMusicVideo(int id, string thumbnail, string fanart, string file,
                                string title, string genre, int year, double rating, string director,

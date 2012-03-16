@@ -62,7 +62,7 @@ namespace XBMC.JsonRpc
             List<XbmcMovie> movies = new List<XbmcMovie>();
             foreach (JObject item in (JArray)query["movies"])
             {
-                movies.Add(XbmcMovie.FromJson(item));
+                movies.Add(XbmcMovie.FromJson(item, this.client));
             }
 
             return movies;
@@ -113,7 +113,7 @@ namespace XBMC.JsonRpc
             List<XbmcTvShow> shows = new List<XbmcTvShow>();
             foreach (JObject item in (JArray)query["tvshows"])
             {
-                shows.Add(XbmcTvShow.FromJson(item));
+                shows.Add(XbmcTvShow.FromJson(item, this.client));
             }
 
             return shows;
@@ -340,7 +340,7 @@ namespace XBMC.JsonRpc
             List<XbmcMovie> movies = new List<XbmcMovie>();
             foreach (JObject item in (JArray)query["movies"])
             {
-                movies.Add(XbmcMovie.FromJson(item));
+                movies.Add(XbmcMovie.FromJson(item, this.client));
             }
 
             return movies;
@@ -398,7 +398,7 @@ namespace XBMC.JsonRpc
             List<XbmcTvEpisode> episodes = new List<XbmcTvEpisode>();
             foreach (JObject item in (JArray)query["episodes"])
             {
-                episodes.Add(XbmcTvEpisode.FromJson(item));
+                episodes.Add(XbmcTvEpisode.FromJson(item, this.client));
             }
 
             return episodes;
@@ -510,7 +510,7 @@ namespace XBMC.JsonRpc
             List<XbmcTvSeason> seasons = new List<XbmcTvSeason>();
             foreach (JObject item in (JArray)query["seasons"])
             {
-                seasons.Add(XbmcTvSeason.FromJson(item));
+                seasons.Add(XbmcTvSeason.FromJson(item, this.client));
             }
 
             return seasons;
@@ -575,7 +575,7 @@ namespace XBMC.JsonRpc
             List<XbmcTvEpisode> episodes = new List<XbmcTvEpisode>();
             foreach (JObject item in (JArray)query["episodes"])
             {
-                episodes.Add(XbmcTvEpisode.FromJson(item));
+                episodes.Add(XbmcTvEpisode.FromJson(item, this.client));
             }
 
             return episodes;

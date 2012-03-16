@@ -34,7 +34,8 @@ namespace XBMC.JsonRpc
 
             if (fields == null)
             {
-                properties = XbmcVideo.Fields;
+                //properties = XbmcVideo.Fields;
+                properties = XbmcMedia.Fields;
             }
             else
             {
@@ -55,13 +56,10 @@ namespace XBMC.JsonRpc
 
             JObject item = (JObject) query["item"];
 
-            this.client.LogMessage("Trying to identify the item from JSON");
-            if (item == null) this.client.LogMessage("Item is null!!!");
+            this.client.LogMessage("Trying to identify a video playlist item from JSON");
             result = XbmcVideo.FromJson(item, this.client);
-            //this.client.LogMessage("Result from JSON: " + result.ToString());
             if (result == null) this.client.LogMessage("Result is null!!!");
             return result;
-            //return XbmcVideo.FromJson(item);
         }
 
         public override XbmcPlaylist<XbmcVideo> GetItems(params string[] fields)
@@ -81,10 +79,10 @@ namespace XBMC.JsonRpc
                 return null;
             }
 
-            XbmcPlaylist<XbmcVideo> playlist = XbmcPlaylist<XbmcVideo>.FromJson(query);
+            XbmcPlaylist<XbmcVideo> playlist = XbmcPlaylist<XbmcVideo>.FromJson(query, this.client);
             foreach (JObject item in (JArray)query["items"])
             {
-                playlist.Add(XbmcVideo.FromJson(item));
+                playlist.Add(XbmcVideo.FromJson(item, this.client));
             }
 
             return playlist;

@@ -47,26 +47,22 @@ namespace XBMC.JsonRpc
 
         #region Internal variables
 
-        internal static new string[] Fields
-        {
-            get { return (fields != null ? fields : new string[0]); }
-        }
+        //internal static new string[] Fields
+        //{
+        //    get { return (fields != null ? fields : new string[0]); }
+        //}
 
         #endregion
 
         #region Constructors
 
-        static XbmcMovie()
-        {
+        //static XbmcMovie()
+        //{
             //fields = new string[] { "title", "genre", "year", "rating", "director", "file",
             //                        "trailer", "tagline", "plot", "plotoutline", "originaltitle", 
             //                        "lastplayed", "duration", "playcount", "writer", "studio", 
-            //                        "mpaa", "movieid" };
-            fields = new string[] { "title", "genre", "year", "rating", "director", "file",
-                                    "trailer", "tagline", "plot", "plotoutline", "originaltitle", 
-                                    "lastplayed", "duration", "playcount", "writer", "studio", 
-                                    "mpaa" };
-        }
+            //                        "mpaa" };
+        //}
 
         private XbmcMovie(int id, string thumbnail, string fanart, string file,
                           string title, string genre, int year, double rating, string director,

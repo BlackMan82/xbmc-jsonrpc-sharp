@@ -81,12 +81,18 @@ namespace XBMC.JsonRpc
 
         internal static XbmcPlaylist<TMediaType> FromJson(JObject obj)
         {
+            return FromJson(obj, null);
+        }
+
+        internal static XbmcPlaylist<TMediaType> FromJson(JObject obj, JsonRpcClient logger)
+        {
             try
             {
                 return new XbmcPlaylist<TMediaType>((int)obj["current"], (int)obj["start"], (int)obj["total"]);
             }
             catch (Exception ex)
             {
+                if (logger != null) logger.LogErrorMessage("EXCEPTION in XbmcPlaylist.FromJson()!!!", ex);
                 return null;
             }
         }

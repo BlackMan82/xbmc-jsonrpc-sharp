@@ -13,10 +13,10 @@ namespace XBMC.JsonRpc
 
         #region Internal variables
 
-        internal static new string[] Fields
-        {
-            get { return (fields != null ? fields : new string[0]); }
-        }
+        //internal static new string[] Fields
+        //{
+        //    get { return (fields != null ? fields : new string[0]); }
+        //}
 
         #endregion
 
@@ -31,10 +31,10 @@ namespace XBMC.JsonRpc
 
         #region Constructors
 
-        static XbmcArtist()
-        {
-            fields = new string[] { "artistid", "artist" };
-        }
+        //static XbmcArtist()
+        //{
+        //    fields = new string[] { "artistid", "artist" };
+        //}
 
         private XbmcArtist(int id, string name, string thumbnail, string fanart)
             : base(id, thumbnail, fanart)
@@ -53,6 +53,11 @@ namespace XBMC.JsonRpc
 
         internal static XbmcArtist FromJson(JObject obj)
         {
+            return FromJson(obj, null);
+        }
+
+        internal static XbmcArtist FromJson(JObject obj, JsonRpcClient logger)
+        {
             if (obj == null)
             {
                 return null;
@@ -67,6 +72,7 @@ namespace XBMC.JsonRpc
             }
             catch (Exception ex)
             {
+                if (logger != null) logger.LogErrorMessage("EXCEPTION in XbmcArtist.FromJson()!!!", ex);
                 return null;
             }
         }

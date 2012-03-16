@@ -49,7 +49,7 @@ namespace XBMC.JsonRpc
             List<XbmcArtist> artists = new List<XbmcArtist>();
             foreach (JObject item in (JArray)query["artists"])
             {
-                artists.Add(XbmcArtist.FromJson(item));
+                artists.Add(XbmcArtist.FromJson(item, this.client));
             }
 
             return artists;
@@ -209,7 +209,7 @@ namespace XBMC.JsonRpc
             List<XbmcSong> songs = new List<XbmcSong>();
             foreach (JObject item in (JArray)query["songs"])
             {
-                songs.Add(XbmcSong.FromJson(item));
+                songs.Add(XbmcSong.FromJson(item, this.client));
             }
 
             return songs;
@@ -260,7 +260,7 @@ namespace XBMC.JsonRpc
             List<XbmcAlbum> albums = new List<XbmcAlbum>();
             foreach (JObject item in (JArray)query["albums"])
             {
-                albums.Add(XbmcAlbum.FromJson(item));
+                albums.Add(XbmcAlbum.FromJson(item, this.client));
             }
 
             return albums;

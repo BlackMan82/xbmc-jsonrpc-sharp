@@ -86,6 +86,11 @@ namespace XBMC.JsonRpc
 
         internal static XbmcAlbum FromJson(JObject obj)
         {
+            return FromJson(obj, null);
+        }
+
+        internal static XbmcAlbum FromJson(JObject obj, JsonRpcClient logger)
+        {
             if (obj == null)
             {
                 return null;
@@ -110,6 +115,7 @@ namespace XBMC.JsonRpc
             }
             catch (Exception ex)
             {
+                if (logger != null) logger.LogErrorMessage("EXCEPTION in XbmcAlbum.FromJson()!!!", ex);
                 return null;
             }
         }

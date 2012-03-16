@@ -91,20 +91,20 @@ namespace XBMC.JsonRpc
 
         #region Internal variables
 
-        internal static new string[] Fields
-        {
-            get { return (fields != null ? fields : new string[0]); }
-        }
+        //internal static new string[] Fields
+        //{
+        //    get { return (fields != null ? fields : new string[0]); }
+        //}
 
         #endregion
 
         #region Constructors
 
-        static XbmcTvSeason()
-        {
-            fields = new string[] { "title", "genre", "rating", "showtitle",
-                                    "season", "episode", "playcount", "studio", "mpaa" };
-        }
+        //static XbmcTvSeason()
+        //{
+        //    fields = new string[] { "title", "genre", "rating", "showtitle",
+        //                            "season", "episode", "playcount", "studio", "mpaa" };
+        //}
 
         private XbmcTvSeason(string thumbnail, string fanart,  string title, string genre, double rating, 
                              string showTitle, int season, int episodeCount,
@@ -129,6 +129,11 @@ namespace XBMC.JsonRpc
 
         internal static new XbmcTvSeason FromJson(JObject obj)
         {
+            return FromJson(obj, null);
+        }
+
+        internal static new XbmcTvSeason FromJson(JObject obj, JsonRpcClient logger)
+        {
             if (obj == null)
             {
                 return null;
@@ -150,6 +155,7 @@ namespace XBMC.JsonRpc
             }
             catch (Exception ex)
             {
+                if (logger != null) logger.LogErrorMessage("EXCEPTION in XbmcTvSeason.FromJson()!!!", ex);
                 return null;
             }
         }

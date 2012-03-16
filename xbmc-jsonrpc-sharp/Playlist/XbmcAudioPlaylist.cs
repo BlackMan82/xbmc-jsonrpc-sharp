@@ -26,13 +26,16 @@ namespace XBMC.JsonRpc
 
         public override XbmcSong GetCurrentItem(string[] fields)
         {
+            XbmcSong result; 
+            
             this.client.LogMessage("XbmcAudioPlaylist.GetCurrentItem()");
 
             object[] properties;
 
             if (fields == null)
             {
-                properties = XbmcSong.Fields;
+                //properties = XbmcSong.Fields;
+                properties = XbmcMedia.Fields;
             }
             else
             {
@@ -53,7 +56,10 @@ namespace XBMC.JsonRpc
 
             JObject item = (JObject) query["item"];
 
-            return XbmcSong.FromJson(item);
+            this.client.LogMessage("Trying to identify an audio playlist item from JSON");
+            result = XbmcSong.FromJson(item, this.client);
+            if (result == null) this.client.LogMessage("Result is null!!!");
+            return result;
         }
 
         public override XbmcPlaylist<XbmcSong> GetItems(params string[] fields)
@@ -73,10 +79,10 @@ namespace XBMC.JsonRpc
                 return null;
             }
 
-            XbmcPlaylist<XbmcSong> playlist = XbmcPlaylist<XbmcSong>.FromJson((JObject) query["result"]);
+            XbmcPlaylist<XbmcSong> playlist = XbmcPlaylist<XbmcSong>.FromJson((JObject) query["result"], this.client);
             foreach (JObject item in (JArray)query["items"])
             {
-                playlist.Add(XbmcSong.FromJson(item));
+                playlist.Add(XbmcSong.FromJson(item, this.client));
             }
 
             return playlist;

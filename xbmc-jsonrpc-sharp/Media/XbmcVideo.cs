@@ -36,10 +36,10 @@ namespace XBMC.JsonRpc
 
         #region Internal variables
 
-        internal static new string[] Fields
-        {
-            get { return (fields != null ? fields : new string[0]); }
-        }
+        //internal static new string[] Fields
+        //{
+        //    get { return (fields != null ? fields : new string[0]); }
+        //}
 
         #endregion
 
@@ -149,20 +149,14 @@ namespace XBMC.JsonRpc
 
         #region Constructors
 
-        static XbmcVideo()
-        {
-            //fields = new string[] { "title", "artist", "genre", "year", "rating", 
+        //static XbmcVideo()
+        //{
+            //fields = new string[] { "title", "artist", "genre", "year", "rating", "file", 
             //                        "director", "trailer", "tagline", "plot", "plotoutline",
             //                        "originaltitle", "lastplayed", "showtitle", "firstaired", "duration",
             //                        "season", "episode", "runtime", "playcount", "writer",
-            //                        "studio", "mpaa", "premiered", "album", "id" };
-            //fields = new string[] { "title", "artist", "genre", "year", "rating",
-            fields = new string[] { "title", "artist", "genre", "year", "rating", "file", 
-                                    "director", "trailer", "tagline", "plot", "plotoutline",
-                                    "originaltitle", "lastplayed", "showtitle", "firstaired", "duration",
-                                    "season", "episode", "runtime", "playcount", "writer",
-                                    "studio", "mpaa", "premiered", "album" };
-        }
+            //                        "studio", "mpaa", "premiered", "album" };
+        //}
 
         protected XbmcVideo(int id, string thumbnail, string fanart,
                           string title, string genre, int year, double rating, int playCount, string studio, 
@@ -216,24 +210,26 @@ namespace XBMC.JsonRpc
 
             try
             {
-                // If there is a showtitle field and it has a value, the retrieved item is a XbmcTvEpisode
-                //if (obj["showtitle"] != null && !string.IsNullOrEmpty(JsonRpcClient.GetField<string>(obj, "showtitle")))
-                if (obj["type"] != null && "episode" == JsonRpcClient.GetField<string>(obj, "type"))
-                {
-                    if (logger != null) logger.LogMessage("Trying to identify TV episode");
+                string type;
+                if (obj["type"] == null)
+                    type = "unknown";
+                else
+                    type = JsonRpcClient.GetField<string>(obj, "type");
+                if (logger != null) logger.LogMessage("Trying to identify " + type);
+                
+                if ("episode" == type)
                     return XbmcTvEpisode.FromJson(obj, logger);
-                }
-                // If there is a artist field and it has a vaue, the retrieved item is a XbmcMusicVideo
-                if (obj["artist"] != null && !string.IsNullOrEmpty(JsonRpcClient.GetField<string>(obj, "artist")))
-                {
-                    if (logger != null) logger.LogMessage("Trying to identify Music video");
-                    return XbmcMusicVideo.FromJson(obj, logger);
-                }
 
-                // Otherwise it must be a movie
+                if ("musicvideo" == type)
+                    return XbmcMusicVideo.FromJson(obj, logger);
+
+                if ("movie" == type)
+                    return XbmcMovie.FromJson(obj, logger);
+
+                // Otherwise try a movie
                 //else if () 
                 //{
-                if (logger != null) logger.LogMessage("Trying to identify Movie");
+                if (logger != null) logger.LogMessage("Trying to identify Unhandled type of media as movie");
                 return XbmcMovie.FromJson(obj, logger);
                 //}
             }

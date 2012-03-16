@@ -20,10 +20,10 @@ namespace XBMC.JsonRpc
 
         #region Internal variables
 
-        internal static new string[] Fields
-        {
-            get { return (fields != null ? fields : new string[0]); }
-        }
+        //internal static new string[] Fields
+        //{
+        //    get { return (fields != null ? fields : new string[0]); }
+        //}
 
         #endregion
 
@@ -68,15 +68,12 @@ namespace XBMC.JsonRpc
 
         #region Constructors
 
-        static XbmcSong()
-        {
-            //fields = new string[] { "title", "artist", "genre", "year",
-            //                        "rating", "album", "tracknumber", "discnumber", 
-            //                        "duration", "comment", "lyrics" };
-            fields = new string[] { "title", "artist", "genre", "year",
-                                    "rating", "album", "track", 
-                                    "duration", "comment", "lyrics" };
-        }
+        //static XbmcSong()
+        //{
+        //    fields = new string[] { "title", "artist", "genre", "year", "file",
+        //                            "rating", "album", "track", 
+        //                            "duration", "comment", "lyrics" };
+        //}
 
         //private XbmcSong(int id, string thumbnail, string fanart, string file,
         //                 string title, string artist, string genre, int year,
@@ -108,6 +105,11 @@ namespace XBMC.JsonRpc
 
         internal static XbmcSong FromJson(JObject obj)
         {
+            return FromJson(obj, null);
+        }
+        
+        internal static XbmcSong FromJson(JObject obj, JsonRpcClient logger)
+        {
             if (obj == null)
             {
                 return null;
@@ -134,6 +136,7 @@ namespace XBMC.JsonRpc
             }
             catch (Exception ex)
             {
+                if (logger != null) logger.LogErrorMessage("EXCEPTION in XbmcSong.FromJson()!!!", ex);
                 return null;
             }
         }

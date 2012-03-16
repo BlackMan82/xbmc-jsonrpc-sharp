@@ -51,10 +51,10 @@ namespace XBMC.JsonRpc
 
         #region Internal variables
 
-        internal static new string[] Fields
-        {
-            get { return (fields != null ? fields : new string[0]); }
-        }
+        //internal static new string[] Fields
+        //{
+        //    get { return (fields != null ? fields : new string[0]); }
+        //}
 
         #endregion
 
@@ -69,18 +69,13 @@ namespace XBMC.JsonRpc
 
         #region Constructors
 
-        static XbmcTvEpisode()
-        {
-            //fields = new string[] { "title", "year", "rating", 
+        //static XbmcTvEpisode()
+        //{
+            //fields = new string[] { "title", "year", "rating", "file",
             //                        "director", "plot", "lastplayed", "showtitle", "firstaired", 
             //                        "duration", "season", "episode", "playcount", "writer",
-            //                        "studio", "mpaa", "premiered", "episodeid" };
-            //fields = new string[] { "title", "year", "rating", 
-            fields = new string[] { "title", "year", "rating", "file",
-                                    "director", "plot", "lastplayed", "showtitle", "firstaired", 
-                                    "duration", "season", "episode", "playcount", "writer",
-                                    "studio", "mpaa", "premiered", "id"};
-        }
+            //                        "studio", "mpaa", "premiered", "id"};
+        //}
 
         private XbmcTvEpisode(int id, string thumbnail, string fanart, string file, 
                               string title, int year, double rating, string director,
