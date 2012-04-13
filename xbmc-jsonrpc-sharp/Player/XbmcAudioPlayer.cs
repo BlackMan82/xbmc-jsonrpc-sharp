@@ -92,25 +92,25 @@ namespace XBMC.JsonRpc
 
         #region JSON RPC Info Labels
 
-        //public virtual int Bitrate
-        //{
-        //    get
-        //    {
-        //        this.client.LogMessage("XbmcAudioPlayer.Bitrate");
+        public virtual int Bitrate
+        {
+            get
+            {
+                this.client.LogMessage("XbmcAudioPlayer.Bitrate");
 
-        //        return base.getInfo<int>("MusicPlayer.BitRate");
-        //    }
-        //}
+                return base.getInfo<int>("MusicPlayer.BitRate");
+            }
+        }
 
-        //public virtual int Channels
-        //{
-        //    get
-        //    {
-        //        this.client.LogMessage("XbmcAudioPlayer.Channels");
+        public virtual int Channels
+        {
+            get
+            {
+                this.client.LogMessage("XbmcAudioPlayer.Channels");
 
-        //        return base.getInfo<int>("MusicPlayer.Channels");
-        //    }
-        //}
+                return base.getInfo<int>("MusicPlayer.Channels");
+            }
+        }
 
         public virtual string Codec
         {

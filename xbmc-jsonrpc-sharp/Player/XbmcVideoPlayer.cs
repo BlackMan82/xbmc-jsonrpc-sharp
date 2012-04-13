@@ -126,15 +126,15 @@ namespace XBMC.JsonRpc
         //    }
         //}
 
-        //public virtual int AudioChannels
-        //{
-        //    get
-        //    {
-        //        this.client.LogMessage("XbmcVideoPlayer.AudioChannels");
+        public virtual int AudioChannels
+        {
+            get
+            {
+                this.client.LogMessage("XbmcVideoPlayer.AudioChannels");
 
-        //        return base.getInfo<int>("VideoPlayer.AudioChannels");
-        //    }
-        //}
+                return base.getInfo<int>("VideoPlayer.AudioChannels");
+            }
+        }
 
         public virtual string AudioCodec
         {
